@@ -1,0 +1,29 @@
+Main Landing Page:
+
+1. About me --
+	- Personal
+		- Contact infor: Edward Bird, Phd. - 405-274-3539 - 4104 spook rock way, manhattan ks, 66502
+		- I am a a bioinformatican in Manhattan KS. Love camping, hiking and cats. My goal is to help facilitate the integration of bioinformatic and computational techniques in to biological/agricultural systems to solve problems and advance reserch using these techniques. In traditional training I am a biologists focuing in molecular and genetic techniques. Hoever, informally I have spent much of my time advancing my computation, and programming skills to apply informatic techniques to my reserch. With these skills I strive to build novel tools and workflows to address complex biological questions. **Not sure exatly what I want to put here, I assume it will be longer than this **
+	- Education
+		-Microbiology and Cellular Biology (B.S.) - Oklahoma State University
+		-Genetics (Phd.) - Kansas State University
+	** Notes - Might some better ideas to put on the landing page **
+2. Current Reserch Projects
+	-Metagenomic Survalianve of Antimicroibial Resistance and Insectiside Resistance (Link to new page)
+	-Risk mapping of novel enviroments for force health protection (Link to new page)
+	-Using AI to evaulate effect of Fly worry behavior in livestock systems (Link to new page)
+	-Comparitive genomics of Culicoides sonerensis to understand biological processes (Links to new page)
+3. Previous Reserch Projects
+	-Using comparitive transcripomics to investigate drivers vector competence in culicoides sonorensis (Links to new page)
+	-Charcterizing the resitome of bacteria carried by House Flies (link to new page)
+	-DAM (Drosophilla Activity Monitors): Quantifying behavior of flies (link to new page)
+4. Other pages
+	-Publications (Link to new page)
+	-Skills (Link to new page)
+	-CV (Link to new page)
+
+Sub Page Designs:
+1. Project pages:
+	-I want these pages to be something that is easy to edit. I will be adding some images (figures and examples from these projects) as well as summaries of these projects in different headings. Importantly at the top I want to put a place for associated papers, and associated code repositories. These pages will kind of be like simplified papers with a breif introduction into each project, then a section for the methods and results we have done so far, and then a section for discussion and future work.
+2. Special pages:
+	This will pages that are specific to my publication (Just the same list as in my CV), Skills (We will work on this later.), and my full CV. I want my skills page to be broken up into three main catories. 1. Bioinformatics, 2. Data Science & Machine learning, 3. Wet lab skills. I will then list specific skills for these three main catogories, and projects in whick I proved these skills in (and links to those pages if they have them, or to my CV if they do not have a dedicated page.)
