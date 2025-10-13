@@ -1,0 +1,117 @@
+import ProjectLayout from '@/components/ProjectLayout';
+
+export const metadata = {
+  title: 'Characterizing the Resistome of House Flies',
+};
+
+<ProjectLayout
+  title="Characterizing the Resistome of Bacteria Carried by House Flies"
+  papers={[
+    {
+      title: "Bridging the gap: Comparative genomics of antimicrobial resistant Escherichia coli carried by house flies, manure, feed, and water sources at Kansas beef cattle operations",
+      url: "#",
+      journal: "In Preparation - 2025"
+    },
+    {
+      title: "Adult house flies reflect site-specific antimicrobial resistant bacteria in confined beef cattle operation environments",
+      url: "#",
+      journal: "In Preparation - 2025"
+    },
+    {
+      title: "Bacterial abundance and antimicrobial resistance prevalence carried by adult house flies at Kansas dairy and beef cattle operations",
+      url: "https://doi.org/10.1093/jme/tjaf052",
+      journal: "Journal of Medical Entomology (2025)"
+    }
+  ]}
+>
+
+## Introduction
+
+House flies (*Musca domestica*) are ubiquitous in livestock operations and have long been suspected as mechanical vectors of antimicrobial resistant (AMR) bacteria. Their frequent contact with fecal matter, feed, water, and other contaminated substrates makes them ideal candidates for acquiring and disseminating resistant bacteria.
+
+This project comprehensively characterized the resistome—the collection of antimicrobial resistance genes—carried by house flies in Kansas beef and dairy cattle operations, and examined their role as sources, sentinels, and disseminators of resistance.
+
+## Methods and Results
+
+### Study Design
+
+Multi-site surveillance included:
+
+- **Sampling locations**: Kansas beef feedlots and dairy operations
+- **Sample types**: House flies, manure, feed, water, and environmental samples
+- **Temporal sampling**: Multiple time points across seasons
+- **Bacterial isolation**: Culture-based methods for *E. coli* and other coliforms
+- **Whole-genome sequencing**: Illumina sequencing of bacterial isolates
+
+### Resistome Characterization
+
+Using BALROG-ISO pipeline, comprehensive analysis revealed:
+
+- **AMR gene diversity**: Multiple resistance classes including beta-lactams, tetracyclines, aminoglycosides, and fluoroquinolones
+- **Multi-drug resistance**: High prevalence of bacteria resistant to 3+ antibiotic classes
+- **Clinically relevant genes**: Detection of extended-spectrum beta-lactamases (ESBLs) and carbapenemases
+- **Mobile genetic elements**: Plasmids and transposons facilitating horizontal gene transfer
+
+### Site-Specific AMR Patterns
+
+Key findings included:
+
+- **Beef vs. dairy differences**: Distinct resistome profiles reflecting different management practices
+- **Correlation with antibiotic use**: AMR gene prevalence linked to therapeutic and sub-therapeutic antibiotic use
+- **Environmental mirroring**: Fly-associated bacteria reflect site-specific environmental reservoirs
+- **Seasonal variation**: Temporal changes in resistance patterns
+
+### Comparative Genomics
+
+Whole-genome analysis of *E. coli* isolates showed:
+
+- **Strain diversity**: Multiple phylogenetic lineages present
+- **Source attribution**: Genomic similarity between fly-borne and environmental isolates
+- **Transmission pathways**: Evidence for bidirectional transfer between flies and substrates
+- **Plasmid sharing**: Common plasmids across fly and environmental isolates
+
+## Discussion and Future Work
+
+### Role of House Flies
+
+Evidence supports house flies as:
+
+1. **Mechanical vectors**: Acquiring resistant bacteria from contaminated substrates
+2. **Sentinels**: Reflecting environmental AMR burden
+3. **Amplifiers**: Potentially increasing bacterial loads through regurgitation and defecation
+4. **Disseminators**: Transporting resistant bacteria across farm environments
+
+### Public Health Implications
+
+Findings have implications for:
+
+- **Zoonotic transmission**: Potential for AMR spread from livestock to humans
+- **Agricultural workers**: Occupational exposure risks
+- **Food safety**: Contamination of feed and food products
+- **Environmental health**: Spread of resistance beyond farm boundaries
+
+### Future Directions
+
+Ongoing research includes:
+
+- **Longitudinal studies**: Tracking AMR dynamics over extended periods
+- **Intervention trials**: Testing fly control measures on AMR prevalence
+- **Metagenomics**: Culture-independent resistome characterization
+- **Transmission modeling**: Quantifying fly contribution to AMR spread
+- **One Health integration**: Connecting agricultural, environmental, and human health data
+
+### Management Recommendations
+
+Research findings inform:
+
+- Targeted fly control strategies
+- Antimicrobial stewardship in livestock
+- Environmental management practices
+- Biosecurity protocols
+- Worker safety guidelines
+
+*Phylogenetic trees, AMR gene prevalence maps, and comparative genomics visualizations will be added.*
+
+</ProjectLayout>
+
+export default ({ children }) => children;

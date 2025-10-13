@@ -1,0 +1,83 @@
+import ProjectLayout from '@/components/ProjectLayout';
+
+export const metadata = {
+  title: 'Risk Mapping for Force Health Protection',
+};
+
+<ProjectLayout
+  title="Risk Mapping for Force Health Protection"
+>
+
+## Introduction
+
+This project develops computational frameworks and geospatial mapping approaches to assess pathogen and antimicrobial resistance (AMR) distribution in novel environments. The goal is to provide actionable intelligence for force health protection and biosecurity risk assessment.
+
+By integrating metagenomic surveillance data with environmental, climatic, and demographic factors, we create predictive risk maps that identify high-risk areas and inform targeted interventions.
+
+## Methods and Results
+
+### Data Integration Framework
+
+The risk mapping pipeline integrates multiple data sources:
+
+- **Metagenomic surveillance data**: Pathogen and AMR gene detections from environmental samples
+- **Geospatial coordinates**: GPS locations of sampling sites
+- **Environmental variables**: Temperature, humidity, precipitation, land use
+- **Demographic data**: Population density, livestock density, healthcare access
+- **Infrastructure data**: Water systems, sanitation, agricultural practices
+
+### Risk Assessment Models
+
+Statistical and machine learning approaches include:
+
+- **Spatial interpolation**: Kriging and inverse distance weighting for continuous risk surfaces
+- **Cluster analysis**: Identifying hotspots of pathogen or resistance occurrence
+- **Predictive modeling**: Random forest and ensemble methods for risk prediction
+- **Time-series analysis**: Tracking temporal trends in pathogen emergence
+
+### Visualization and Reporting
+
+Interactive mapping tools provide:
+
+- Heat maps of pathogen prevalence
+- AMR gene distribution across regions
+- Risk scores for novel environments
+- Temporal evolution of risk patterns
+
+## Discussion and Future Work
+
+### Current Applications
+
+Risk mapping frameworks are being applied to:
+
+1. **Military deployment sites**: Assessing health threats in forward operating bases
+2. **Agricultural operations**: Mapping AMR in livestock production areas
+3. **Disaster response**: Rapid risk assessment for emergency scenarios
+4. **Border security**: Monitoring cross-border pathogen movement
+
+### Future Directions
+
+Planned enhancements include:
+
+- **Real-time updates**: Integration with ongoing surveillance for dynamic risk maps
+- **Multi-pathogen models**: Simultaneous assessment of multiple health threats
+- **Climate change scenarios**: Projecting future risk under different climate models
+- **Mobile applications**: Field-deployable risk assessment tools
+- **Validation studies**: Ground-truthing predictions with targeted sampling
+- **International collaboration**: Expanding geographic coverage
+
+### Impact
+
+This work provides critical intelligence for:
+
+- Military force health protection
+- Public health preparedness
+- Agricultural biosecurity
+- International travel medicine
+- Outbreak response planning
+
+*Maps, risk visualization examples, and case studies will be added.*
+
+</ProjectLayout>
+
+export default ({ children }) => children;

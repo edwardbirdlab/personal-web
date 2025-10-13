@@ -1,0 +1,108 @@
+import ProjectLayout from '@/components/ProjectLayout';
+
+export const metadata = {
+  title: 'DAM: Quantifying Fly Behavior',
+};
+
+<ProjectLayout
+  title="DAM: Quantifying Behavior of Flies with Drosophila Activity Monitors"
+  papers={[
+    {
+      title: "Effects of vesicular stomatitis virus infection on circadian rhythm activities of Culicoides sonorensis",
+      url: "#",
+      journal: "Presented at ESA 2023"
+    }
+  ]}
+>
+
+## Introduction
+
+Understanding the behavioral ecology of disease vectors is crucial for predicting transmission dynamics and developing control strategies. Drosophila Activity Monitors (DAM) provide a high-resolution, automated approach to quantify insect activity patterns, including circadian rhythms, locomotor activity, and behavioral responses to environmental stimuli.
+
+This project applied DAM technology to study *Culicoides sonorensis* behavior, particularly focusing on how arbovirus infection alters activity patterns and circadian rhythms.
+
+## Methods and Results
+
+### DAM System Setup
+
+The DAM system monitors individual insect activity through:
+
+- **Infrared beam detection**: Recording beam breaks as flies move through glass tubes
+- **Continuous monitoring**: 24/7 data collection over days to weeks
+- **Environmental control**: Precise temperature and light cycle regulation
+- **High-throughput capacity**: Simultaneous monitoring of 32+ individuals per system
+
+### Circadian Rhythm Analysis
+
+Behavioral metrics quantified include:
+
+- **Activity patterns**: Total movement counts per time bin
+- **Circadian periodicity**: Free-running period length under constant conditions
+- **Phase relationships**: Timing of activity onset relative to light cycles
+- **Amplitude**: Robustness of rhythmic activity
+- **Fragmentation**: Distribution of activity and rest bouts
+
+### Effects of Virus Infection
+
+VSV-infected *C. sonorensis* exhibited:
+
+- **Altered circadian rhythms**: Changes in period length and phase
+- **Reduced activity levels**: Overall decrease in locomotor activity
+- **Disrupted sleep/rest patterns**: Fragmentation of rest periods
+- **Time-dependent changes**: Progressive behavioral alterations post-infection
+
+### Integration with Transcriptomics
+
+Correlation between behavioral changes and gene expression revealed:
+
+- Downregulation of circadian clock genes (*period*, *timeless*, *clock*)
+- Altered expression of neurotransmitter receptors
+- Changes in metabolic genes affecting energy availability
+- Modulation of neuro-sensory pathways
+
+## Discussion and Future Work
+
+### Biological Significance
+
+Behavioral alterations may:
+
+1. **Enhance transmission**: Infected midges may alter host-seeking behavior
+2. **Reduce fitness**: Activity changes could impact survival and reproduction
+3. **Indicate infection status**: Behavioral biomarkers for surveillance
+4. **Reflect neuro-manipulation**: Evidence of pathogen manipulation of host behavior
+
+### Methodological Advances
+
+DAM system provides:
+
+- Objective, quantitative behavioral measurements
+- High temporal resolution (minute-level data)
+- Long-term monitoring capability
+- Applicability to various insect species
+
+### Future Directions
+
+Planned studies include:
+
+- **Additional virus systems**: Testing BTV and EHDV effects on behavior
+- **Dose-response relationships**: Quantifying effects of viral load
+- **Environmental modulation**: Testing temperature and humidity effects
+- **Pharmacological interventions**: Probing molecular mechanisms with drugs
+- **Field validation**: Comparing lab and field-collected midge behavior
+- **Other vector species**: Extending to mosquitoes and other disease vectors
+
+### Applications
+
+This approach supports:
+
+- Vector competence assessment
+- Insecticide efficacy testing
+- Environmental risk assessment
+- Basic neurobiology research
+- Behavioral manipulation studies
+
+*Activity plots, periodograms, and circadian rhythm visualizations will be added.*
+
+</ProjectLayout>
+
+export default ({ children }) => children;

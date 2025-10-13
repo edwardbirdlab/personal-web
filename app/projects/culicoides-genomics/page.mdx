@@ -1,0 +1,92 @@
+import ProjectLayout from '@/components/ProjectLayout';
+
+export const metadata = {
+  title: 'Comparative Genomics of Culicoides sonorensis',
+};
+
+<ProjectLayout
+  title="Comparative Genomics of Culicoides sonorensis"
+  papers={[
+    {
+      title: "A chromosome scale genome for Culicoides sonorensis shows novel gene expansion and structural variation across Diptera",
+      url: "#",
+      journal: "In Preparation - 2025"
+    }
+  ]}
+>
+
+## Introduction
+
+*Culicoides sonorensis* is a significant arthropod vector responsible for transmitting multiple arboviruses affecting livestock, including bluetongue virus (BTV) and epizootic hemorrhagic disease virus (EHDV). Despite its importance, genomic resources for this species have been limited, hindering our understanding of vector biology and competence.
+
+This project produced a high-quality, chromosome-scale genome assembly for *C. sonorensis*, revealing novel insights into gene family expansions, structural variations, and evolutionary adaptations unique to this disease vector.
+
+## Methods and Results
+
+### Genome Assembly
+
+A hybrid sequencing approach was employed using:
+
+- **Oxford Nanopore long-read sequencing** for contiguity and structural variant detection
+- **Illumina short-read sequencing** for error correction and validation
+- **Hi-C chromatin conformation capture** for chromosome-scale scaffolding
+
+The resulting assembly achieved:
+
+- Near-complete chromosome representation
+- High contiguity with scaffold N50 exceeding expectations
+- BUSCO completeness scores indicating high-quality gene space coverage
+
+### Comparative Genomic Analysis
+
+Comparative analysis across Diptera revealed:
+
+- **Novel gene family expansions** in chemoreceptor and immune-related genes
+- **Structural variations** unique to *Culicoides* lineage
+- **Chromosomal rearrangements** compared to other biting midges and mosquitoes
+- **Species-specific adaptations** potentially related to host preference and vector competence
+
+### Gene Annotation
+
+Comprehensive annotation identified:
+
+- Protein-coding genes with functional predictions
+- Non-coding RNA genes including miRNAs and lncRNAs
+- Repetitive elements and transposable elements
+- Genes potentially involved in virus-vector interactions
+
+## Discussion and Future Work
+
+### Significance
+
+This chromosome-scale genome provides:
+
+1. **Foundation for functional genomics**: Enables gene expression studies and genetic manipulation
+2. **Comparative framework**: Facilitates understanding of vector evolution
+3. **Target identification**: Reveals potential targets for vector control strategies
+4. **Population genomics**: Supports studies of genetic diversity and adaptation
+
+### Future Directions
+
+The genome assembly enables several ongoing and planned studies:
+
+- **Population genomics**: Analyzing genetic variation across geographic populations
+- **RNAi efficiency studies**: Using the genome to design effective knockdown experiments
+- **Gene family evolution**: Detailed analysis of expanded gene families
+- **Functional validation**: CRISPR-based gene editing to test candidate genes
+- **Comparative transcriptomics**: Integration with expression data to understand vector-pathogen interactions
+
+### Broader Impact
+
+This resource will benefit the vector biology community by:
+
+- Providing reference sequences for molecular studies
+- Enabling genome-wide association studies for vector competence traits
+- Supporting development of molecular tools for surveillance
+- Facilitating comparative studies across disease vectors
+
+*Genome browser visualizations, synteny plots, and gene family analyses will be added.*
+
+</ProjectLayout>
+
+export default ({ children }) => children;

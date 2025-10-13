@@ -1,0 +1,130 @@
+import ProjectLayout from '@/components/ProjectLayout';
+
+export const metadata = {
+  title: 'Transcriptomics of Vector Competence in Culicoides',
+};
+
+<ProjectLayout
+  title="Using Comparative Transcriptomics to Investigate Drivers of Vector Competence"
+  papers={[
+    {
+      title: "Common transcriptomic responses of Culicoides sonorensis biting midges to infection with different arboviruses",
+      url: "#",
+      journal: "In Preparation - 2025"
+    },
+    {
+      title: "Vesicular Stomatitis Virus Elicits Early Transcriptome Response in Culicoides sonorensis Cells",
+      url: "https://doi.org/10.3390/v15102108",
+      journal: "Viruses (2023)"
+    }
+  ]}
+>
+
+## Introduction
+
+*Culicoides sonorensis* is a competent vector for multiple arboviruses, including vesicular stomatitis virus (VSV), bluetongue virus (BTV), and epizootic hemorrhagic disease virus (EHDV). Understanding the molecular mechanisms underlying vector competence—the ability of an arthropod to acquire, maintain, and transmit pathogens—is critical for developing control strategies.
+
+This project used comparative transcriptomics to identify common and virus-specific responses in *C. sonorensis* following infection with different arboviruses, revealing key pathways and genes involved in virus-vector interactions.
+
+## Methods and Results
+
+### Experimental Design
+
+Transcriptomic studies were conducted using:
+
+- **Multiple virus systems**: VSV, BTV, and EHDV infections in midges and cell lines
+- **Time-course experiments**: Sampling at early, middle, and late infection stages
+- **Control comparisons**: Mock-infected midges as baseline
+- **RNA sequencing**: Illumina paired-end sequencing for comprehensive transcriptome coverage
+
+### RNA-Seq Analysis Pipeline
+
+Bioinformatic analysis included:
+
+- Quality control and adapter trimming
+- Alignment to the *C. sonorensis* reference genome
+- Differential expression analysis using DESeq2
+- Gene ontology enrichment and pathway analysis
+- Comparative analysis across virus types
+
+### Key Findings
+
+#### Early Immune Response
+
+VSV infection elicited rapid transcriptomic changes in *C. sonorensis* cells:
+
+- Upregulation of immune-related genes (Toll and IMD pathways)
+- Activation of antiviral RNAi machinery
+- Modulation of apoptosis pathways
+
+#### Common Response Patterns
+
+Across different arbovirus infections, common responses included:
+
+- **Innate immune activation**: Consistent upregulation of pattern recognition receptors
+- **Metabolic reprogramming**: Shifts in energy metabolism and lipid processing
+- **Cytoskeletal reorganization**: Changes in structural proteins
+- **Redox homeostasis**: Oxidative stress response pathways
+
+#### Virus-Specific Signatures
+
+Unique transcriptomic signatures distinguished different virus infections:
+
+- VSV-specific neuro-sensory gene modulation
+- BTV-specific gut epithelial responses
+- EHDV-specific immune evasion markers
+
+### Effects on Neuro-Sensory Function
+
+Analysis revealed significant impacts on:
+
+- Olfactory receptor genes
+- Circadian rhythm genes
+- Visual system components
+- Mechanosensory pathways
+
+These findings suggest that arbovirus infection alters midge behavior, potentially affecting host-seeking and feeding patterns.
+
+## Discussion and Future Work
+
+### Significance
+
+This work identified:
+
+1. **Core vector competence factors**: Genes consistently involved across virus types
+2. **Potential control targets**: Pathways that could be disrupted to reduce transmission
+3. **Biomarkers**: Transcriptomic signatures for detecting infected vectors
+4. **Mechanistic insights**: Understanding of how viruses manipulate vector biology
+
+### Integration with Behavioral Studies
+
+Transcriptomic findings integrated with Drosophila Activity Monitor (DAM) studies showed:
+
+- Circadian rhythm disruption correlates with gene expression changes
+- Infected midges exhibit altered activity patterns
+- Behavioral changes may enhance virus transmission
+
+### Future Directions
+
+Ongoing and planned work includes:
+
+- **Functional validation**: RNAi knockdown of candidate genes
+- **Single-cell transcriptomics**: Tissue-specific responses during infection
+- **Proteomic validation**: Confirming protein-level changes
+- **Field validation**: Testing biomarkers in wild-caught populations
+- **Comparative vector studies**: Extending to other *Culicoides* species
+
+### Impact
+
+This research contributes to:
+
+- Understanding vector-pathogen co-evolution
+- Developing transmission-blocking strategies
+- Improving surveillance tools
+- Predicting emergence of vector-borne diseases
+
+*Heatmaps, pathway diagrams, and expression plots will be added.*
+
+</ProjectLayout>
+
+export default ({ children }) => children;

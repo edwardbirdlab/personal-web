@@ -1,0 +1,115 @@
+import ProjectLayout from '@/components/ProjectLayout';
+
+export const metadata = {
+  title: 'Metagenomic Surveillance of AMR and Insecticide Resistance',
+};
+
+<ProjectLayout
+  title="Metagenomic Surveillance of Antimicrobial and Insecticide Resistance"
+  papers={[
+    {
+      title: "BALROG-MON: a high-throughput pipeline for Bacterial AntimicrobiaL Resistance annOtation of Genomes-Metagenomic Oxford Nanopore",
+      url: "https://doi.org/10.17912/micropub.biology.001427",
+      journal: "MicroPubl Biol (2025)"
+    },
+    {
+      title: "BALROG-ISO: a high-throughput pipeline for Bacterial AntimicrobiaL Resistance annOtation of Genomes-ISOlate whole genome",
+      url: "#",
+      journal: "MicroPubl Biol (In Review - 2025)"
+    },
+    {
+      title: "BALROG-MON: A Metagenomic Framework that Facilitates the Use of House Flies as Xenosurveillance Tools for Monitoring Pathogens and Antimicrobial Resistance",
+      url: "#",
+      journal: "In Preparation - 2025"
+    }
+  ]}
+  repositories={[
+    {
+      name: "BALROG-MON Pipeline",
+      url: "https://github.com/edwardbirdlab/BALROG-MON"
+    },
+    {
+      name: "BALROG-ISO Pipeline",
+      url: "https://github.com/edwardbirdlab/BALROG-ISO"
+    }
+  ]}
+>
+
+## Introduction
+
+This project leverages house flies as innovative xenosurveillance tools for monitoring pathogens and antimicrobial resistance (AMR) in agricultural environments. House flies are ubiquitous in livestock operations and have frequent contact with various contamination sources, making them ideal biological samplers for environmental surveillance.
+
+The **BALROG** (Bacterial AntimicrobiaL Resistance annOtation of Genomes) pipeline suite was developed to facilitate high-throughput metagenomic analysis of antimicrobial resistance genes and pathogens from both metagenomic samples (BALROG-MON) and bacterial isolates (BALROG-ISO).
+
+## Methods and Results
+
+### BALROG-MON Pipeline Development
+
+BALROG-MON is a Nextflow-based pipeline designed for Oxford Nanopore metagenomic sequencing data. The pipeline:
+
+- Performs quality control and adapter trimming
+- Conducts taxonomic classification of reads
+- Assembles metagenomes and bins contigs
+- Annotates antimicrobial resistance genes using multiple databases (ResFinder, CARD, MEGARes)
+- Identifies virulence factors and mobile genetic elements
+- Generates comprehensive reports with visualizations
+
+The pipeline uses Apptainer/Docker containerization for reproducibility and can be deployed on HPC clusters or cloud infrastructure.
+
+### BALROG-ISO Pipeline Development
+
+BALROG-ISO focuses on whole-genome sequencing of bacterial isolates, providing:
+
+- Genome assembly and quality assessment
+- Comprehensive AMR gene annotation
+- Plasmid identification and characterization
+- Multi-locus sequence typing (MLST)
+- Phylogenetic analysis capabilities
+
+### House Fly Surveillance Studies
+
+Using these pipelines, we have conducted extensive surveillance at Kansas beef and dairy cattle operations:
+
+- Detected multi-drug resistant bacteria mirroring environmental sources
+- Identified clinically relevant AMR genes in *Escherichia coli* and other pathogens
+- Demonstrated site-specific AMR patterns correlating with antibiotic use
+- Provided evidence for flies as vectors and sentinels of resistance
+
+Recent work detected highly pathogenic avian influenza virus H5N1 in house flies during the 2024 California outbreak, demonstrating the utility of this approach for emerging pathogen surveillance.
+
+## Discussion and Future Work
+
+### Current Findings
+
+Our metagenomic surveillance approach has proven highly effective for:
+
+1. **Real-time monitoring** of AMR in agricultural settings
+2. **Early detection** of emerging pathogens
+3. **Risk assessment** for human and animal health
+4. **Tracking** the spread of resistance genes across environments
+
+### Future Directions
+
+Ongoing and planned work includes:
+
+- **Insecticide resistance monitoring**: Extending the framework to track pesticide resistance genes in arthropod pests
+- **Geospatial mapping**: Developing predictive models for AMR distribution
+- **Expanded pathogen panels**: Incorporating viral and fungal pathogen detection
+- **Machine learning integration**: Automated risk assessment and outbreak prediction
+- **Multi-site validation**: Testing the approach across diverse agricultural systems
+- **Force health protection**: Applying xenosurveillance to military and biosecurity contexts
+
+### Impact
+
+This work provides a novel, cost-effective approach to biosurveillance that can inform:
+
+- Antimicrobial stewardship programs
+- Biosecurity risk assessments
+- Public health interventions
+- Agricultural management practices
+
+*Images and additional figures will be added to illustrate pipeline workflows, surveillance results, and AMR patterns.*
+
+</ProjectLayout>
+
+export default ({ children }) => children;

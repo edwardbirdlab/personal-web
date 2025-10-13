@@ -1,0 +1,83 @@
+import ProjectLayout from '@/components/ProjectLayout';
+
+export const metadata = {
+  title: 'AI-Based Fly Worry Behavior Evaluation',
+};
+
+<ProjectLayout
+  title="AI-Based Fly Worry Behavior Evaluation in Livestock Systems"
+>
+
+## Introduction
+
+Fly worry behavior—the defensive actions livestock take in response to fly harassment—significantly impacts animal welfare and agricultural productivity. However, quantifying this behavior in large-scale operations has been challenging due to the labor-intensive nature of behavioral observations.
+
+This project develops artificial intelligence and computer vision approaches to automatically detect, quantify, and analyze fly worry behavior in cattle, enabling large-scale assessment of fly impacts on livestock productivity.
+
+## Methods and Results
+
+### Computer Vision Pipeline
+
+The AI system employs:
+
+- **Video analysis**: Automated processing of surveillance camera footage from cattle operations
+- **Deep learning models**: Convolutional neural networks trained to recognize specific behaviors
+- **Behavior classification**: Identifying tail swishing, head throwing, foot stamping, and other defensive behaviors
+- **Temporal tracking**: Monitoring behavior patterns throughout the day and season
+
+### Behavioral Metrics
+
+Quantitative measures include:
+
+- **Frequency**: Count of defensive behaviors per unit time
+- **Duration**: Length of fly worry episodes
+- **Intensity**: Severity of behavioral responses
+- **Spatial patterns**: Distribution of affected animals within facilities
+- **Circadian rhythms**: Time-of-day patterns in fly worry
+
+### Correlation with Productivity
+
+Integration with production data to assess:
+
+- Impact on weight gain and feed efficiency
+- Effects on milk production in dairy operations
+- Relationship between fly worry and health outcomes
+- Economic costs of fly harassment
+
+## Discussion and Future Work
+
+### Current Findings
+
+Preliminary analyses demonstrate:
+
+1. **Automated quantification** is comparable to human observations
+2. **Temporal patterns** correlate with fly population densities
+3. **Individual variation** in susceptibility to fly harassment
+4. **Environmental factors** modulate behavioral responses
+
+### Future Directions
+
+Ongoing development includes:
+
+- **Real-time monitoring**: Live behavior assessment for immediate intervention
+- **Predictive models**: Forecasting fly pressure based on weather and management
+- **Intervention testing**: Evaluating control strategies using behavior metrics
+- **Multi-site validation**: Testing across diverse cattle operations
+- **Integration with fly surveillance**: Combining with metagenomic monitoring
+- **Economic modeling**: Cost-benefit analysis of control measures
+
+### Applications
+
+This technology can support:
+
+- Precision livestock management
+- Targeted fly control strategies
+- Animal welfare assessment
+- Research on host-parasite interactions
+- Agricultural insurance and risk assessment
+
+*Video examples, behavior recognition visualizations, and productivity correlations will be added.*
+
+</ProjectLayout>
+
+export default ({ children }) => children;
