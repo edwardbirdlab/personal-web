@@ -21,18 +21,27 @@ export default function Home() {
         <h2 className="text-3xl font-bold mb-6 border-b-2 border-gray-300 pb-2">About Me</h2>
         <div className="text-lg leading-relaxed space-y-4">
           <p>
-            I am a bioinformatician based in Manhattan, Kansas, specializing in computational approaches to biological
-            and agricultural research. My work focuses on integrating bioinformatic and computational techniques to
-            solve complex problems in genomics, pathogen surveillance, and antimicrobial resistance detection.
+            I am a computational biologist based in Manhattan, Kansas, specializing in developing and applying software-driven 
+            approaches to biological and agricultural research. My work focuses on creating reproducible workflows and 
+            computational tools that transform complex biological data into meaningful insights, with an emphasis on genomics, 
+            vector biology, pathogen surveillance, and antimicrobial resistance.
           </p>
           <p>
-            With traditional training in molecular and genetic biology, I have spent much of my career advancing my
-            computational and programming skills to build novel tools and workflows that address critical research
-            questions in vector-pathogen interactions, metagenomic surveillance, and comparative genomics.
+            Trained in molecular and genetic biology, I’ve spent my career bridging the gap between experimental science and 
+            computation. I develop scalable pipelines using Nextflow and, and build specialized custom Python tools to address 
+            emerging challenges and specialized research. More recently, I have expanded to include AI and machine learning into 
+            my skill set, developing computer vision and pose estimation models for behavioral analysis to quantify fly worry 
+            behavior livestock systems.
           </p>
           <p>
-            Beyond research, I enjoy camping, hiking, and spending time with cats. My goal is to facilitate the
-            integration of bioinformatics in biological and agricultural systems to advance scientific discovery.
+            I believe that the most impactful science happens when computational and experimental disciplines work hand in hand. 
+            My goal is to make computational biology more accessible to researchers from traditional biological backgrounds, lowering 
+            the barriers that often limit interdisciplinary discovery. By collaborating with domain experts and developing tools 
+            that are intuitive, reproducible, and adaptable, I aim to advance biological research and help train the next generation 
+            of scientists who bridge the gap between biology and computation.
+          </p>
+          <p>
+            Outside of research, I enjoy camping, hiking, and spending time with my cats.
           </p>
         </div>
       </section>
@@ -70,21 +79,21 @@ export default function Home() {
         <div className="grid md:grid-cols-2 gap-6">
           <Link href="/projects/metagenomic-surveillance" className="block bg-white border-2 border-gray-200 p-6 rounded-lg hover:border-blue-500 hover:shadow-lg transition-all">
             <h3 className="text-xl font-semibold mb-3 text-blue-600">
-              Metagenomic Surveillance of Antimicrobial and Insecticide Resistance
+              House Fly-Based Resistome (AMR/Insecticide) Surveillance
             </h3>
             <p className="text-gray-700">
-              Using house flies as xenosurveillance tools to monitor pathogens and antimicrobial resistance in
-              agricultural environments through the BALROG pipeline suite.
+              Using house flies to track pathogens and resistance, helping scientists and farmers understand both 
+              current threats and emerging trends.
             </p>
           </Link>
 
           <Link href="/projects/risk-mapping" className="block bg-white border-2 border-gray-200 p-6 rounded-lg hover:border-blue-500 hover:shadow-lg transition-all">
             <h3 className="text-xl font-semibold mb-3 text-blue-600">
-              Risk Mapping for Force Health Protection
+              Mapping Emerging Pathogen Risks in Novel Environments
             </h3>
             <p className="text-gray-700">
-              Developing risk assessment frameworks and geospatial mapping of pathogen and antimicrobial resistance
-              distribution in novel environments.
+              Detecting pathogens in novel environments and creating interactive risk maps to inform 
+              stakeholders of potential health threats.
             </p>
           </Link>
 
