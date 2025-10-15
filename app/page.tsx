@@ -99,21 +99,21 @@ export default function Home() {
 
           <Link href="/projects/fly-worry-ai" className="block bg-white border-2 border-gray-200 p-6 rounded-lg hover:border-blue-500 hover:shadow-lg transition-all">
             <h3 className="text-xl font-semibold mb-3 text-blue-600">
-              AI-Based Fly Worry Behavior Evaluation
+              AI-Based Fly Worry Behavior Quantificaion
             </h3>
             <p className="text-gray-700">
-              Using artificial intelligence to evaluate the effect of fly worry behavior in livestock systems
+              Using artificial intelligence methods to evaluate the effect of fly worry behavior in livestock systems
               and its impact on agricultural productivity.
             </p>
           </Link>
 
           <Link href="/projects/culicoides-genomics" className="block bg-white border-2 border-gray-200 p-6 rounded-lg hover:border-blue-500 hover:shadow-lg transition-all">
             <h3 className="text-xl font-semibold mb-3 text-blue-600">
-              Comparative Genomics of Culicoides sonorensis
+              Expanding Genomic Resources for Arbovirus Vector Studies
             </h3>
             <p className="text-gray-700">
-              Chromosome-scale genome assembly revealing novel gene expansions and structural variation to
-              understand biological processes in this important disease vector.
+              Developing and leveraging genomic resources to better understand Culicoides sonorensis biology and the 
+              mechanisms underlying vector competence.
             </p>
           </Link>
         </div>
@@ -125,31 +125,31 @@ export default function Home() {
         <div className="grid md:grid-cols-2 gap-6">
           <Link href="/projects/transcriptomics-vector-competence" className="block bg-gray-50 border-2 border-gray-200 p-6 rounded-lg hover:border-blue-500 hover:shadow-lg transition-all">
             <h3 className="text-xl font-semibold mb-3 text-gray-700">
-              Transcriptomics of Vector Competence
+              Unraveling Vector–Pathogen Interactions through Transcriptomics in Culicoides sonorensis
             </h3>
             <p className="text-gray-600">
-              Using comparative transcriptomics to investigate drivers of vector competence in Culicoides
-              sonorensis and their interactions with various arboviruses.
+              Exploring arbovirus interactions in Culicoides sonorensis through transcriptomics to reveal 
+              immune responses, behavioral changes, and candidates for future study.
             </p>
           </Link>
 
           <Link href="/projects/housefly-resistome" className="block bg-gray-50 border-2 border-gray-200 p-6 rounded-lg hover:border-blue-500 hover:shadow-lg transition-all">
             <h3 className="text-xl font-semibold mb-3 text-gray-700">
-              Characterizing the Resistome of House Flies
+              House Flies and Antimicrobial Resistance Surveillance
             </h3>
             <p className="text-gray-600">
-              Comprehensive analysis of antimicrobial resistant bacteria carried by house flies in cattle
-              operations and their role as sources and disseminators of resistance.
+              Combining metagenomic analysis and custom Nextflow workflows to characterize AMR genes 
+              in house flies and optimize methods for tracking resistance in agricultural and environmental systems.
             </p>
           </Link>
 
           <Link href="/projects/dam-behavioral-quantification" className="block bg-gray-50 border-2 border-gray-200 p-6 rounded-lg hover:border-blue-500 hover:shadow-lg transition-all">
             <h3 className="text-xl font-semibold mb-3 text-gray-700">
-              DAM: Quantifying Fly Behavior
+              Analyzing Circadian and Behavioral Rhythms in Flies
             </h3>
             <p className="text-gray-600">
-              Using Drosophila Activity Monitors to quantify circadian rhythm activities and behavioral changes
-              in response to pathogen infection.
+              Applying computational analysis to DAM data to measure fly circadian rhythms and infection-induced 
+              behavioral changes.
             </p>
           </Link>
         </div>
