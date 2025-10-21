@@ -1,11 +1,11 @@
 import ProjectLayout from '@/components/ProjectLayout';
 
 export const metadata = {
-  title: 'Comparative Genomics of Culicoides sonorensis',
+  title: 'A Chromosome-Scale Genome for Culicoides sonorensis',
 };
 
 <ProjectLayout
-  title="Comparative Genomics of Culicoides sonorensis"
+  title="A Chromosome-Scale Genome for Culicoides sonorensis"
   papers={[
     {
       title: "A chromosome scale genome for Culicoides sonorensis shows novel gene expansion and structural variation across Diptera",
@@ -15,77 +15,78 @@ export const metadata = {
   ]}
 >
 
-## Introduction
+## Why Culicoides
 
-*Culicoides sonorensis* is a significant arthropod vector responsible for transmitting multiple arboviruses affecting livestock, including bluetongue virus (BTV) and epizootic hemorrhagic disease virus (EHDV). Despite its importance, genomic resources for this species have been limited, hindering our understanding of vector biology and competence.
+Biting midges in the genus *Culicoides* are tiny flies, less than 3mm long, but they pose a serious threat when it comes to disease transmission and livestock health. These insects are the primary vectors of devastating livestock viruses including bluetongue virus (BTV), epizootic hemorrhagic disease virus (EHDV), and African horse sickness virus. In North America, *Culicoides sonorensis* is the only confirmed vector species that can be maintained in stable laboratory colonies, making it our best model for understanding how these important vectors work.
 
-This project produced a high-quality, chromosome-scale genome assembly for *C. sonorensis*, revealing novel insights into gene family expansions, structural variations, and evolutionary adaptations unique to this disease vector.
+Despite their agricultural and economic importance, *Culicoides* have been severely underrepresented in genomic research. The previous genome assembly was highly fragmented, limiting what we could learn about gene organization, chromosome structure, and evolutionary history. We set out to change that and provide the *Culicoides* community a high quality resource to build knowledge upon.
 
-## Methods and Results
+## Building a Genome from a Single Midge
 
-### Genome Assembly
+One of the biggest challenges in sequencing *Culicoides* has been their small size. It's difficult to extract enough high-quality DNA from such tiny insects. Our goal was to create a chromosome-scale genome, which requires high-quality data from a single individual to avoid mixing haplotypes from different specimens. Thanks to advances in low-input library preparation and PacBio HiFi sequencing technology, we were able to generate PacBio data from just a single individual female midge.
 
-A hybrid sequencing approach was employed using:
+While long-read sequencing alone produces highly accurate contiguous sequences, it often isn't enough to assemble entire eukaryotic chromosomes. That's where Hi-C comes in. Hi-C is a technique that captures which DNA sequences are physically close to each other inside the nucleus. Sequences from the same chromosome interact more frequently than sequences from different chromosomes, and regions close together on the same chromosome interact even more. By sequencing these interactions, we can computationally organize our assembled sequences into chromosome-scale scaffolds.
 
-- **Oxford Nanopore long-read sequencing** for contiguity and structural variant detection
-- **Illumina short-read sequencing** for error correction and validation
-- **Hi-C chromatin conformation capture** for chromosome-scale scaffolding
+We sequenced PacBio HiFi long reads from one female and Hi-C data from a second female. The combination of these two data types allowed us to achieve true chromosome-scale resolution.
 
-The resulting assembly achieved:
+## A Complete Genome: Three Chromosomes and 136.5 Megabases
 
-- Near-complete chromosome representation
-- High contiguity with scaffold N50 exceeding expectations
-- BUSCO completeness scores indicating high-quality gene space coverage
+The chromosome scale assembly spans 136.5 Mb total, organized into three chromosomes and 20 scaffolds, with the 3 chromosomes representing 99.4% of the nuclear genome. We also assembled a complete 16.2 kb circular mitochondrial genome with all 37 expected genes. The assembly showed high BUSCO completeness with 90.2% of expected Dipteran genes present, matching the completeness seen in other *Culicoides* species.
 
-### Comparative Genomic Analysis
+## Two Annotations, Complementary Strengths
 
-Comparative analysis across Diptera revealed:
+With a new genome assembly in hand, the next step was annotation, meaning identifying where genes are located and what they encode. We generated two independent gene annotations using extensive RNA-seq evidence from 109 samples covering eggs, all four larval stages, pupae, and adults of both sexes under several conditions like blood fed and sugar fed. We processed this transcriptomic data using our [genome_prep pipeline](https://github.com/edwardbirdlab/genome_prep), which prepared all the data for annotation with eGAPx and BRAKER3.
 
-- **Novel gene family expansions** in chemoreceptor and immune-related genes
-- **Structural variations** unique to *Culicoides* lineage
-- **Chromosomal rearrangements** compared to other biting midges and mosquitoes
-- **Species-specific adaptations** potentially related to host preference and vector competence
+The two annotations provide complementary strengths. The eGAPx annotation predicted 11,367 protein-coding genes with 18,776 transcripts, averaging 1.7 isoforms per gene. This annotation closely mirrors NCBI's RefSeq pipeline, making it ideal for comparative genomics with other RefSeq-annotated species. The BRAKER3 annotation predicted 13,759 protein-coding genes with 17,373 transcripts, averaging 1.3 isoforms per gene. This annotation may capture additional genes that lack strong RNA-seq support.
 
-### Gene Annotation
+Both annotations benefit from the comprehensive life-stage coverage in our RNA-seq panel, though the relatively lower isoform counts compared to some mosquito species like *Aedes aegypti* (which averages 1.9 isoforms) suggests there may still be splice variants we haven't captured.
 
-Comprehensive annotation identified:
+![Genome Circos Plot](/personal-web/images/circos.png)
+This figure a representation of the three chromosomes, with each ring displaying different genomic features. A) BUSCO gene density, with darker regions indicating higher density; B) RNA-seq read depth based on all 109 samples; C) gene density; D) repeat density; and E) GC content. F) BUSCO completeness summary (ODB10 dataset), showing proportions of complete, duplicated, fragmented, and missing BUSCOs. This plot clearly shows genomic landmarks like the centromeres as well as gene dense regions.
 
-- Protein-coding genes with functional predictions
-- Non-coding RNA genes including miRNAs and lncRNAs
-- Repetitive elements and transposable elements
-- Genes potentially involved in virus-vector interactions
+## Evolutionary Insights: Culicoides Stands Apart
 
-## Discussion and Future Work
+![Species Comparision](/personal-web/images/speciestree.png)
+To understand how *Culicoides* fits in the dipteran family tree, we compared our genome to 29 other chromosome-scale assemblies representing diverse flies, including mosquitoes, sand flies, fruit flies, and others. Using our custom pipeline [nf_multi_synteny](https://github.com/edwardbirdlab/nf_multi_synteny) and OrthoFinder3, we identified nearly 20,000 orthogroups across all species and built a comprehensive phylogeny.
 
-### Significance
+**Dipteran Species Tree** reveals some fascinating patterns.
 
-This chromosome-scale genome provides:
+### Deep Divergence from Other Vectors
+*Culicoides* species form a distinct lineage with substantial evolutionary distance from mosquitoes (Culicidae) and sand flies (Phlebotomus). While these groups are all blood-feeding vectors (aside from *P. vanderplanki*, the non-biting midge), they've been evolving independently for around 200 million years. This deep divergence makes *Culicoides* research particularly difficult. Well studied systems like mosquitoes may seem close, but in reality are quite distant.
 
-1. **Foundation for functional genomics**: Enables gene expression studies and genetic manipulation
-2. **Comparative framework**: Facilitates understanding of vector evolution
-3. **Target identification**: Reveals potential targets for vector control strategies
-4. **Population genomics**: Supports studies of genetic diversity and adaptation
+### Genomic Comparison Between *Culicoides*
+The three available *Culicoides* genomes that we analyzed, *C. sonorensis*, *C. brevitarsis*, and *C. stellifer*, are among the smallest dipteran genomes in our comparison at 119 to 137 Mb, second only to *Polypedilum vanderplanki* at 119 Mb. Interestingly, the difference in genome size between the three *Culicoides* genomes mirrors their repeat content. The size difference of the larger *Culicoides* genomes (*C. brevitarsis* and *C. sonorensis*) compared to *C. stellifer* is mostly reflected in increased repetitive elements. Additionally, all three *Culicoides* species were missing about 10% of BUSCO genes, with all three missing the same 360 BUSCO genes (7.1%). This suggests these absences may reflect a poor fit of the dipteran BUSCOs rather than assembly incompleteness.
 
-### Future Directions
+### Limited Synteny, and lots of Rearrangement
+When we compared conserved gene order (synteny) between species using our [custom pipeline](https://github.com/edwardbirdlab/nf_multi_synteny), which implements MCScanX for synteny detection, we found minimal conservation outside the Culicoides genus. Only 0.7% of genes showed conserved order with *P. vanderplanki*, the closest relative we could compare. Even between *C. sonorensis* and *C. brevitarsis*, only 30.6% of genes were in syntenic blocks, and these blocks were small and highly rearranged compared to the longer, more stable blocks seen between mosquito genera.
 
-The genome assembly enables several ongoing and planned studies:
+## What's Next: From Genome to Function
 
-- **Population genomics**: Analyzing genetic variation across geographic populations
-- **RNAi efficiency studies**: Using the genome to design effective knockdown experiments
-- **Gene family evolution**: Detailed analysis of expanded gene families
-- **Functional validation**: CRISPR-based gene editing to test candidate genes
-- **Comparative transcriptomics**: Integration with expression data to understand vector-pathogen interactions
+This chromosome-scale genome opens up numerous exciting research directions.
 
-### Broader Impact
+### Sex Determination and Chromosome Biology
+With three complete chromosomes, we can now investigate sex determination mechanisms in *Culicoides*. Are they similar to mosquito systems? Is there a defined sex determination locus? Identifying sex-determining loci could enable the development of sex based control strategies.
 
-This resource will benefit the vector biology community by:
+### Vector Competence and Virus-Vector Interactions
+*Culicoides sonorensis* shows significant variation in vector competence. Some individuals are susceptible to BTV while others in the same population are not, even within the same colony. With a complete genome, we can perform quantitative trait mapping by crossing refractory and susceptible lines to identify important SNPs and loci. We can also perform phylogenetic genome-wide association studies (phylo-GWAS) between vector and non-vector species to identify loci controlling vector competence.
 
-- Providing reference sequences for molecular studies
-- Enabling genome-wide association studies for vector competence traits
-- Supporting development of molecular tools for surveillance
-- Facilitating comparative studies across disease vectors
+### Novel Control Strategies
+With this new genome, we can better test hypotheses about gene function using modern genetic and molecular techniques. We can now design CRISPR/Cas9 targets to create knockout lines or better design RNAi targets to knockdown specific genes of interest. Testing gene function in this way could reveal new targets for control methods or help us understand the molecular basis of traits like insecticide resistance or vector competence. This genomic resource provides the foundation needed to move from identifying candidate genes to functionally validating their roles in *Culicoides* biology.
 
-*Genome browser visualizations, synteny plots, and gene family analyses will be added.*
+
+## Broader Impact
+
+This genome represents more than just a sequence. It's a foundation for understanding an entire group of understudied disease vectors. The deep evolutionary divergence of *Culicoides* from mosquitoes and sand flies means they may have evolved unique solutions to challenges like blood-feeding, immune defense, and virus transmission. By studying these differences, we can gain broader insights into vector biology. Not all vectors are alike, and *Culicoides* offers a complementary perspective to mosquito-focused research. We can identify conserved versus lineage-specific mechanisms and ask what aspects of vector competence are universal versus which are unique adaptations. We can also develop tailored control approaches because control strategies that work for mosquitoes may not work for biting midges. We need midge-specific solutions.
+
+## Data Availability
+
+All data and analysis code are publicly available. The genome assembly will be available at NCBI GenBank upon publication (coming soon!). Both eGAPx and BRAKER3 gene models will be released with the genome (NCBI). [CSON_GENOME](https://github.com/edwardbirdlab/CSON_GENOME) documents the assembly and annotation process. Our analysis pipelines include [genome_prep](https://github.com/edwardbirdlab/genome_prep) for RNA-seq processing for annotation and [nf_multi_synteny](https://github.com/edwardbirdlab/nf_multi_synteny) for comparative genomics and synteny analysis. Raw sequencing data has been deposited in NCBI SRA.
+
+We hope this resource will accelerate research on *Culicoides* biology and contribute to better management of the effect they have on livestock systems.
+
+---
+
+*For questions about this work or to request early access to genome files before publication, please contact me.*
 
 </ProjectLayout>
 
