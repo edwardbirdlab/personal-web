@@ -6,77 +6,142 @@ export const metadata = {
 
 <ProjectLayout
   title="AI-Based Fly Worry Behavior Evaluation in Livestock Systems"
+  papers={[
+    {
+      title: "Oh bother! Model development for quantification of animal fly worry behaviors",
+      url: "#",
+      journal: "Poster Presentation - 2024"
+    }
+  ]}
 >
 
-## Introduction
+## Why Quantify Fly Worry?
 
-Fly worry behavior—the defensive actions livestock take in response to fly harassment—significantly impacts animal welfare and agricultural productivity. However, quantifying this behavior in large-scale operations has been challenging due to the labor-intensive nature of behavioral observations.
+Biting flies are more than just a nuisance for livestock. The number of flies per animal doesn't always correlate with their impact on health and productivity, and this impact can vary significantly between individual animals. Traditional approaches to measuring fly harassment rely on human observers manually counting flies or recording defensive behaviors—methods that are limited by resources, prone to variability between annotators, and difficult to scale.
 
-This project develops artificial intelligence and computer vision approaches to automatically detect, quantify, and analyze fly worry behavior in cattle, enabling large-scale assessment of fly impacts on livestock productivity.
+Automated annotation of fly worry behaviors has the potential to standardize measurements and rapidly analyze the quantifiable impacts of biting flies on animals. With computer vision and machine learning, we can objectively measure not just whether behaviors occur, but also their frequency, duration, and intensity. This project develops an AI-based approach to automatically detect and quantify fly worry behaviors in horses, with future applications to cattle and other livestock.
 
-## Methods and Results
+## Building a Pose Estimation Model
 
-### Computer Vision Pipeline
+### Training Data and Multi-Annotator Workflow
 
-The AI system employs:
+We started with two ~2-minute videos of horses grazing on hay in a small enclosure during mid-summer, filmed from the left side. From these videos, we extracted 200 frames for manual annotation. To test the feasibility of a collaborative annotation workflow, we divided the labeling between four lab members: two undergraduate students each labeled 50 frames from Video 1, and two graduate students each labeled 50 frames from Video 2.
 
-- **Video analysis**: Automated processing of surveillance camera footage from cattle operations
-- **Deep learning models**: Convolutional neural networks trained to recognize specific behaviors
-- **Behavior classification**: Identifying tail swishing, head throwing, foot stamping, and other defensive behaviors
-- **Temporal tracking**: Monitoring behavior patterns throughout the day and season
+Rather than using DeepLabCut's native interface, we performed annotations using makesense.ai, an accessible online annotation tool. We then wrote a custom Python script to convert these annotations into DeepLabCut-compatible format. For this initial test, all annotations were pooled and treated as coming from a single annotator within the DeepLabCut framework.
 
-### Behavioral Metrics
+### Keypoint Selection for Fly Worry
 
-Quantitative measures include:
+We defined 21 body keypoints focused on the left side of the horse, chosen specifically for their relevance to fly worry behaviors. These included head and neck points (nose tip, left and right eye, poll), torso landmarks (back, left shoulder, left hip, dock), all four legs with three points each (knee, fetlock, and hoof), and the tail tip. This keypoint set allowed us to track movements associated with head backs, tail swishes, and leg stamps—the three primary defensive behaviors we aimed to quantify.
 
-- **Frequency**: Count of defensive behaviors per unit time
-- **Duration**: Length of fly worry episodes
-- **Intensity**: Severity of behavioral responses
-- **Spatial patterns**: Distribution of affected animals within facilities
-- **Circadian rhythms**: Time-of-day patterns in fly worry
+### Model Architecture and Training
 
-### Correlation with Productivity
+We implemented a single-animal DeepLabCut model using the PyTorch engine with a ResNet-50 backbone. To improve keypoint localization, we modified the default architecture by adding an intermediate layer (512 channels) in both the heatmap and location refinement heads, using a two-stage deconvolution process with 3×3 kernels and stride-2 upsampling.
 
-Integration with production data to assess:
+The model was trained for 200 epochs with a batch size of 8 using the AdamW optimizer. We employed a learning rate schedule starting at 0.0001, decreasing to 0.00001 at epoch 90, then to 0.000001 at epoch 120. Training data was split 95% for training and 5% for validation using a single random shuffle.
 
-- Impact on weight gain and feed efficiency
-- Effects on milk production in dairy operations
-- Relationship between fly worry and health outcomes
-- Economic costs of fly harassment
+### Pose Estimation Performance
 
-## Discussion and Future Work
+Snapshot 120 (epoch 120) was selected as the best-performing model based on validation metrics. At this snapshot, the model achieved a test RMSE of 26.38 pixels across all predictions, but only 5.38 pixels for predictions above our 0.6 confidence threshold—a significant improvement showing the value of confidence filtering. The model achieved 87.67% mean average precision (mAP) and 93.33% mean average recall (mAR), indicating strong overall performance.
 
-### Current Findings
+We applied this model to the full training videos and filtered predictions using the 0.6 confidence threshold, retaining only high-confidence keypoint detections. While this filtering improved prediction quality, it also created gaps in the data where keypoints could not be confidently detected—a challenge that would affect the next stage of the project.
 
-Preliminary analyses demonstrate:
+<video width="100%" controls>
+  <source src="/personal-web/videos/Demo_DLC_Horse_Behavior.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
-1. **Automated quantification** is comparable to human observations
-2. **Temporal patterns** correlate with fly population densities
-3. **Individual variation** in susceptibility to fly harassment
-4. **Environmental factors** modulate behavioral responses
+**Demo Video:** The pose estimation model tracking 21 keypoints on a horse, with overlay showing detected fly worry behaviors (head backs, tail swishes, and leg stamps) predicted by the behavior classification model.
 
-### Future Directions
+## From Pose to Behavior
 
-Ongoing development includes:
+### Annotating Ground Truth Behaviors
 
-- **Real-time monitoring**: Live behavior assessment for immediate intervention
-- **Predictive models**: Forecasting fly pressure based on weather and management
-- **Intervention testing**: Evaluating control strategies using behavior metrics
-- **Multi-site validation**: Testing across diverse cattle operations
-- **Integration with fly surveillance**: Combining with metagenomic monitoring
-- **Economic modeling**: Cost-benefit analysis of control measures
+Both training videos were manually annotated by human observers for three specific fly worry behaviors: head backs (horse moves head backward to touch body or leg), tail swishes (horse swishes tail), and leg stamps (horse stamps a hoof). Timestamps for each behavior were recorded and converted to frame numbers based on video frame rate, serving as ground truth labels for training our behavior classification models.
 
-### Applications
+### Feature Engineering for Behavior Recognition
 
-This technology can support:
+A major challenge emerged from the confidence filtering in Stage 1: gaps of missing data appeared throughout the pose tracking data. This required us to engineer features carefully and select models capable of handling sparse, incomplete data without imputation.
 
-- Precision livestock management
-- Targeted fly control strategies
-- Animal welfare assessment
-- Research on host-parasite interactions
-- Agricultural insurance and risk assessment
+We created 207 features from the raw pose data to capture dynamics and spatial relationships relevant to each behavior:
 
-*Video examples, behavior recognition visualizations, and productivity correlations will be added.*
+**Motion Features:** We calculated velocities and accelerations for key body parts including nose tip, poll, back, dock, tail tip, and all four hooves. These captured the speed and rate of change of movement, critical for detecting rapid behaviors like leg stamps. We applied rolling window smoothing (5-frame windows) to reduce noise.
+
+**Angular Features:** We computed angles between body segments, including head angle (nose tip → poll → back) and tail angle (tail tip → dock → back), along with their velocities, to capture postural changes.
+
+**Spatial Relationships:** We calculated distances and heights including tail height, head height, nose-to-tail distance, and hoof spreads. These spatial features helped distinguish behaviors involving specific body configurations.
+
+**Temporal Context:** We added temporal statistics (mean, standard deviation, maximum, minimum) over short-term (10 frames, ~0.3 seconds) and medium-term (30 frames, ~1 second) windows, allowing the model to consider recent history when making predictions.
+
+**Confidence Metrics:** We included likelihood score statistics from DeepLabCut predictions, allowing the model to potentially learn when predictions were unreliable.
+
+### Model Selection and Training
+
+We tested four modeling approaches: Random Forest, XGBoost, LightGBM, and a Temporal CNN-LSTM with attention. LightGBM performed best and was selected for final predictions. Critically, LightGBM natively handles missing values without requiring imputation—essential given the gaps in our pose tracking data. The model was configured with 500 estimators, maximum depth of 8, and a learning rate of 0.05.
+
+We used a temporal data split with the first 15% of each video as the test set and the last 85% as training, resulting in 7,536 training frames and 1,328 test frames. This temporal split better simulates real-world deployment where the model must generalize to new, unseen video segments.
+
+### Post-Processing for Stable Predictions
+
+To reduce false positive/negative predictions and create more stable behavior timelines, we applied temporal smoothing: median filtering with a 5-frame window, a minimum duration filter requiring behaviors to persist for at least 20 frames (~0.67 seconds), and gap filling for brief interruptions. This smoothing reduced prediction transitions by 67.9%, creating more interpretable behavior timelines.
+
+### Behavior Classification Performance
+
+The final smoothed model achieved 41.0% exact match accuracy (all three behaviors correct simultaneously) on the test set. Individual behavior performance varied:
+
+- **Head backs:** F1 = 0.740 (Precision = 0.81, Recall = 0.68)
+- **Tail swishes:** F1 = 0.847 (Precision = 0.77, Recall = 0.94)
+- **Leg stamps:** F1 = 0.422 (Precision = 0.53, Recall = 0.35)
+
+Tail swishes performed best, likely due to their high frequency in the videos (81% of frames) and larger, more easily tracked movements. Leg stamps proved most challenging, occurring in only 31% of frames and relying on hoof tip tracking, which was often poor due to small size, fast movement, and occlusion.
+
+![Behavior Model Comparisons](/personal-web/images/Demo_behavior_model_comparisons.png)
+
+**Model vs. Human Comparison:** Cluster bar chart showing the number of fly worry behavior events (head backs, tail swishes, leg stamps) recorded by three human annotators versus the model for test videos of two horses. The model's predictions generally fall within the range of human variability, demonstrating comparable performance.
+
+## Beyond Detection: Measuring Intensity
+
+As a proof-of-concept for characterizing behavior intensity, we calculated hoof velocity during detected leg stamps. Using known leg measurements to calibrate mm per pixel, we computed velocity averaged across 3-frame windows (1/10 second). This demonstrated that pose-based approaches can not only detect behaviors but also quantify their characteristics—opening possibilities for measuring the severity or "strength" of defensive responses.
+
+![Hoof Velocity Demo](/personal-web/images/Demo_Hoof_Velocity.png)
+
+**Hoof Velocity Analysis:** Five examples of leg stamps with calculated fetlock velocities ranging from 0.29 to 0.96 meters per second. This demonstrates the model's potential to quantify not just behavior occurrence, but also intensity—a valuable metric for understanding the severity of fly harassment.
+
+## Limitations and Lessons Learned
+
+Despite promising results, several limitations emerged from this initial implementation:
+
+**Limited Training Data:** With only two ~2-minute videos, we had insufficient data to train robust models, particularly problematic for the deep learning CNN-LSTM approach which typically requires substantially more training examples.
+
+**Class Imbalance:** Tail swishing in 81% of frames made it difficult for the model to learn when the behavior was absent. Conversely, leg stamps in only 31% of frames provided too few positive examples, especially when trying to distinguish between individual legs.
+
+**Occlusion Challenges:** Training a single model to detect leg stamps from all four legs simultaneously confused the model because the right legs were frequently occluded by the left legs given our camera angle. Future work will train separate models for each leg or focus on well-tracked legs.
+
+**Keypoint Selection:** Many behavioral features relied on hoof tip positions, which had poor tracking quality due to being small, fast-moving, and often occluded. Fetlock joints would have been better choices as they were larger, more stable, and better tracked.
+
+**Tail Tracking Complexity:** A single tail tip keypoint was insufficient to capture the complex motion of tail swishing, where the tail spreads out, changes shape, and can cross to the opposite side of the body. Future models will require more tail annotations to fully capture this behavior.
+
+**Missing Data Propagation:** The 0.6 confidence threshold filtering created gaps that propagated through all derived features. While LightGBM handled missing data better than alternatives, this still impacted performance. Developing imputation methods tailored to this novel dataset would improve future work.
+
+## What's Next
+
+For the next iteration, we plan to collect longer videos capturing horses from both left and right sides under varying conditions. This will address both the limited data problem and single-angle occlusion issues. With more diverse training data, we expect to develop more robust behavior classification models and potentially leverage deep learning approaches that require larger datasets.
+
+### Future Applications
+
+This technology has broad potential applications:
+
+- **Precision livestock management:** Real-time monitoring for immediate intervention
+- **Targeted fly control:** Evaluating control strategies using objective behavior metrics
+- **Animal welfare assessment:** Standardized measurements of harassment and stress
+- **Research integration:** Combining with metagenomic fly surveillance for comprehensive pest management
+- **Multi-species expansion:** Adapting models to cattle, sheep, and other livestock
+- **Economic modeling:** Cost-benefit analysis of fly control measures based on behavioral impact
+
+The preliminary model has already been applied to cattle, demonstrating the transferability of this approach across species. As we refine the methodology and expand training data, automated fly worry quantification could become a valuable tool for both research and practical livestock management.
+
+---
+
+*For questions about this work or to discuss collaboration, please contact me.*
 
 </ProjectLayout>
 

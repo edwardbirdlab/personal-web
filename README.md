@@ -108,6 +108,26 @@ Place images in `public/images/` and reference them in MDX files:
 
 Note: The `/personal-web` prefix is required for GitHub Pages.
 
+### Adding Videos
+
+Place videos in `public/videos/` and embed them in MDX files using HTML5 video tags:
+```mdx
+<video width="100%" controls>
+  <source src="/personal-web/videos/your-video.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+```
+
+You can customize the video element with additional attributes:
+- `width` - Set to percentage (e.g., `"100%"`) or pixels (e.g., `"640"`)
+- `height` - Specify height if needed
+- `controls` - Show playback controls
+- `autoplay` - Auto-play on load (use with caution)
+- `loop` - Loop the video
+- `muted` - Start muted (recommended if using autoplay)
+
+Note: The `/personal-web` prefix is required for GitHub Pages.
+
 ## Deployment
 
 ### Automatic Deployment (GitHub Actions)
