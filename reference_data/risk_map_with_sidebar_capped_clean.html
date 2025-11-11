@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_29caabfb63c45866db496db3db445268 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/gh/python-visualization/folium@main/folium/templates/leaflet_heat.min.js"></script>
+</head>
+<body>
+    
+    
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<style>
+  #sidebar {
+    font-size: 12px;
+  }
+  #sidebar h2 {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  #sidebar h3 {
+    font-size: 14px;
+    margin: 8px 0 4px 0;
+  }
+  .tab-buttons {
+    margin: 10px 0;
+  }
+  .tab-buttons button {
+    padding: 6px 10px;
+    margin-right: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 3px;
+  }
+  .tab-buttons button:hover {
+    background: #e0e0e0;
+  }
+  .tab-buttons button.active {
+    background: #4CAF50;
+    color: white;
+  }
+  .risk-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin: 5px 0;
+  }
+  .risk-high { background: #ff4444; color: white; }
+  .risk-medium { background: #ffaa00; color: white; }
+  .risk-low { background: #44ff44; color: black; }
+  table.dataTable {
+    font-size: 11px !important;
+  }
+  table.dataTable thead th {
+    padding: 6px 8px !important;
+  }
+  table.dataTable tbody td {
+    padding: 4px 8px !important;
+  }
+</style>
+
+<div id="sidebar"
+     style="position: fixed; top: 0; right: 0; width: 35%; height: 100%;
+            background-color: #f9f9f9; border-left: 2px solid #ccc;
+            padding: 15px; overflow:auto; z-index:9999;">
+  <h2 id="siteTitle">Site Information</h2>
+  <div id="siteRisk"></div>
+
+  <div class="tab-buttons">
+    <button onclick="showTab('tab1')" id="btn-tab1" class="active">Pathogens</button>
+    <button onclick="showTab('tab2')" id="btn-tab2">ARG Classes</button>
+    <button onclick="showTab('tab3')" id="btn-tab3">ARGs</button>
+  </div>
+
+  <div id="tab1" class="tab">
+    <h3>Pathogen Detection</h3>
+    <table id="pathogenTable" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Pathogen</th>
+          <th>Risk</th>
+          <th>Rel. Risk</th>
+          <th>Conf.</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div id="tab2" class="tab" style="display:none">
+    <h3>ARG Class Distribution</h3>
+    <canvas id="argChart" style="max-height: 250px;"></canvas>
+    <table id="argClassTable" class="display" style="width:100%; margin-top:10px;">
+      <thead><tr><th>Class</th><th>Count</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div id="tab3" class="tab" style="display:none">
+    <h3>Individual ARGs</h3>
+    <table id="argTable" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Class</th>
+          <th>Conf.</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+function showTab(tabId) {
+    document.querySelectorAll('.tab').forEach(tab => tab.style.display = 'none');
+    document.getElementById(tabId).style.display = 'block';
+
+    // Update button states
+    document.querySelectorAll('.tab-buttons button').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('btn-' + tabId).classList.add('active');
+}
+
+function getRiskClass(risk) {
+    if (risk > 100) return 'risk-high';
+    if (risk > 50) return 'risk-medium';
+    return 'risk-low';
+}
+
+function updateSidebar(siteIndex) {
+    const data = window.siteData[siteIndex];
+
+    if (!data) {
+        console.error('No data for site index:', siteIndex);
+        return;
+    }
+
+    console.log('Updating sidebar for:', data.name, '(Risk:', data.risk + ')');
+
+    // Update site title
+    document.getElementById("siteTitle").innerText = data.name;
+
+    // Update risk display (cap at 100 for display)
+    const displayRisk = Math.min(data.risk, 100);
+    const riskClass = getRiskClass(data.risk);
+    document.getElementById("siteRisk").innerHTML =
+        '<span class="risk-badge ' + riskClass + '">Risk Score: ' + displayRisk.toFixed(2) + '</span>';
+
+    // Populate Pathogen Table
+    const pathogenTable = window.pathogenTable;
+    pathogenTable.clear();
+    if (data.pathogens && data.pathogens.length > 0) {
+        data.pathogens.forEach(p => {
+            pathogenTable.row.add([
+                p.name || 'N/A',
+                p.Risk ? p.Risk.toFixed(1) : 'N/A',
+                p.relative_risk ? p.relative_risk.toFixed(2) : 'N/A',
+                p.confidence ? p.confidence.toFixed(1) : 'N/A'
+            ]);
+        });
+    }
+    pathogenTable.draw();
+
+    // Populate ARG Class Table and Chart
+    const argClassTable = window.argClassTable;
+    argClassTable.clear();
+    let labels = [];
+    let counts = [];
+
+    if (data.arg_classes) {
+        for (let cls in data.arg_classes) {
+            argClassTable.row.add([cls, data.arg_classes[cls]]);
+            labels.push(cls);
+            counts.push(data.arg_classes[cls]);
+        }
+    }
+    argClassTable.draw();
+
+    // Draw Chart
+    let ctx = document.getElementById('argChart').getContext('2d');
+    if (window.argChartInstance) {
+        window.argChartInstance.destroy();
+    }
+
+    if (labels.length > 0) {
+        window.argChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'ARG Count',
+                    data: counts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.7)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: {
+                                size: 10
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 10
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Populate Individual ARGs Table
+    const argTable = window.argTable;
+    argTable.clear();
+    if (data.args && data.args.length > 0) {
+        data.args.forEach(a => {
+            argTable.row.add([
+                a.name || 'N/A',
+                a.class || 'N/A',
+                a.confidence ? a.confidence.toFixed(1) : 'N/A'
+            ]);
+        });
+    }
+    argTable.draw();
+
+    // Show default tab
+    showTab('tab1');
+}
+</script>
+    
+            <div class="folium-map" id="map_29caabfb63c45866db496db3db445268" ></div>
+        
+</body>
+<script>
+    
+    
+window.siteData = {"0": {"name": "Le Ndiambor", "risk": 53.47931333580529, "pathogens": [{"name": "Klebsiella sp.", "Risk": 5.0, "relative_risk": 30.26912473233405, "confidence": 45.90578158458244}, {"name": "Providencia sp.", "Risk": 3.0, "relative_risk": 5.0312293274531426, "confidence": 21.18412348401323}, {"name": "Proteus terrae", "Risk": 3.0, "relative_risk": 18.1789592760181, "confidence": 76.54298642533936}], "arg_classes": {"QUINOLONE": 1}, "args": [{"name": "quinolone resistance pentapeptide repeat protein", "class": "QUINOLONE", "confidence": 100.0}]}, "1": {"name": "Fish Market", "risk": 451.9470167180405, "pathogens": [{"name": "Providencia sp.", "Risk": 4.0, "relative_risk": 0.4731431480169972, "confidence": 1.1646600566572238}, {"name": "Providencia sp.", "Risk": 3.0, "relative_risk": 0.4398435996150145, "confidence": 1.8519730510105874}, {"name": "Providencia sp.", "Risk": 4.0, "relative_risk": 0.9878289473684211, "confidence": 2.431578947368421}, {"name": "Enterobacter hormaechei", "Risk": 5.0, "relative_risk": 3.9101344401998235, "confidence": 5.930061710255656}, {"name": "Acinetobacter harbinensis", "Risk": 3.0, "relative_risk": 5.630767374517375, "confidence": 23.70849420849421}, {"name": "Bacteroides coprosuis", "Risk": 5.0, "relative_risk": 5.318356164383562, "confidence": 8.065753424657535}, {"name": "Psychrobacter faecalis", "Risk": 2.0, "relative_risk": 2.8841623036649215, "confidence": 23.073298429319372}, {"name": "Proteus cibi", "Risk": 5.0, "relative_risk": 48.05479525862069, "confidence": 72.87931034482759}, {"name": "Pseudomonas sp.", "Risk": 5.0, "relative_risk": 35.53501099246231, "confidence": 53.891959798994975}, {"name": "Providencia sp.", "Risk": 4.0, "relative_risk": 1.030966389786187, "confidence": 2.5377634210121522}, {"name": "Providencia sp.", "Risk": 4.0, "relative_risk": 8.001339764201502, "confidence": 19.69560557341908}, {"name": "Providencia sp.", "Risk": 4.0, "relative_risk": 3.0955531642624474, "confidence": 7.6198231735691015}, {"name": "Providencia sp.", "Risk": 4.0, "relative_risk": 1.1136491498583099, "confidence": 2.7412902150358396}, {"name": "Proteus sp.", "Risk": 4.0, "relative_risk": 1.0444481064237776, "confidence": 2.570949185043145}, {"name": "Proteus sp.", "Risk": 4.0, "relative_risk": 0.9120604990912904, "confidence": 2.2450719977631763}, {"name": "Plesiomonas sp.", "Risk": 5.0, "relative_risk": 37.329879385964915, "confidence": 56.614035087719294}, {"name": "Providencia sp.", "Risk": 3.0, "relative_risk": 1.0052738671359436, "confidence": 4.232732072151341}, {"name": "Providencia sp.", "Risk": 4.0, "relative_risk": 13.368489583333334, "confidence": 32.907051282051285}, {"name": "Providencia sp.", "Risk": 4.0, "relative_risk": 2.7448369565217394, "confidence": 6.756521739130435}, {"name": "Psychrobacter celer", "Risk": 1.0, "relative_risk": 0.6000927643784788, "confidence": 12.001855287569573}, {"name": "Pseudomonas sp.", "Risk": 6.0, "relative_risk": 86.97381203183521, "confidence": 83.70411985018727}, {"name": "Pseudomonas sp.", "Risk": 6.0, "relative_risk": 103.92035492081449, "confidence": 100.0135746606335}, {"name": "Enterobacter sp.", "Risk": 6.0, "relative_risk": 44.501137380668254, "confidence": 42.82816229116945}, {"name": "Acinetobacter sp.", "Risk": 8.0, "relative_risk": 48.26710085761279, "confidence": 19.597744360902258}, {"name": "Proteus terrae", "Risk": 3.0, "relative_risk": 2.667188519243314, "confidence": 11.230267449445531}, {"name": "Photobacterium damselae", "Risk": 4.0, "relative_risk": 8.683251404494381, "confidence": 21.374157303370787}, {"name": "Pseudomonas deceptionensis", "Risk": 4.0, "relative_risk": 6.362721599131693, "confidence": 15.662083936324168}], "arg_classes": {"AZITHROMYCIN/ERYTHROMYCIN": 1, "BETA-LACTAM": 2, "CHLORAMPHENICOL": 1, "EFFLUX": 1, "PHENICOL/QUINOLONE": 1, "QUINOLONE": 1, "STREPTOMYCIN": 2, "SULFONAMIDE": 1, "TETRACYCLINE": 5, "TRIMETHOPRIM": 2}, "args": [{"name": "tetracycline resistance ribosomal protection protein", "class": "TETRACYCLINE", "confidence": 57.72}, {"name": "quinolone resistance pentapeptide repeat protein", "class": "QUINOLONE", "confidence": 100.0}, {"name": "carbenicillin-hydrolyzing class A beta-lactamase", "class": "BETA-LACTAM", "confidence": 51.04}, {"name": "multidrug efflux MFS transporter", "class": "EFFLUX", "confidence": 70.49}, {"name": "tetracycline resistance ribosomal protection protein", "class": "TETRACYCLINE", "confidence": 53.99}, {"name": "sulfonamide-resistant dihydropteroate synthase", "class": "SULFONAMIDE", "confidence": 52.03}, {"name": "erythromycin esterase", "class": "AZITHROMYCIN/ERYTHROMYCIN", "confidence": 71.57}, {"name": "chloramphenicol O-acetyltransferase", "class": "CHLORAMPHENICOL", "confidence": 68.54}, {"name": "aminoglycoside O-phosphotransferase", "class": "STREPTOMYCIN", "confidence": 50.56}, {"name": "trimethoprim-resistant dihydrofolate reductase", "class": "TRIMETHOPRIM", "confidence": 55.69}, {"name": "tetracycline efflux MFS transporter", "class": "TETRACYCLINE", "confidence": 100.0}, {"name": "tetracycline efflux MFS transporter", "class": "TETRACYCLINE", "confidence": 100.0}, {"name": "trimethoprim-resistant dihydrofolate reductase", "class": "TRIMETHOPRIM", "confidence": 55.06}, {"name": "tetracycline efflux MFS transporter", "class": "TETRACYCLINE", "confidence": 65.48}, {"name": "class D beta-lactamase", "class": "BETA-LACTAM", "confidence": 69.34}, {"name": "aminoglycoside O-phosphotransferase", "class": "STREPTOMYCIN", "confidence": 76.98}, {"name": "multidrug efflux RND transporter periplasmic adaptor subunit", "class": "PHENICOL/QUINOLONE", "confidence": 54.48}]}, "2": {"name": "MOG 2", "risk": 13.928063866513234, "pathogens": [{"name": "Escherichia coli", "Risk": 5.0, "relative_risk": 13.928063866513234, "confidence": 21.12313003452244}], "arg_classes": {}, "args": []}, "3": {"name": "CLDJ 70", "risk": 25.57176475033786, "pathogens": [{"name": "Morganella morganii", "Risk": 6.0, "relative_risk": 4.3249739583333335, "confidence": 4.1623809523809525}, {"name": "Morganella morganii", "Risk": 6.0, "relative_risk": 5.368060661764706, "confidence": 5.16625386996904}, {"name": "Enterobacter cloacae", "Risk": 7.0, "relative_risk": 20.203704088573154, "confidence": 12.559854897218862}], "arg_classes": {"FOSFOMYCIN": 2}, "args": [{"name": "fosfomycin resistance glutathione transferase", "class": "FOSFOMYCIN", "confidence": 100.0}, {"name": "fosfomycin resistance glutathione transferase", "class": "FOSFOMYCIN", "confidence": 70.63}]}, "4": {"name": "MOG", "risk": 0.0, "pathogens": [], "arg_classes": {}, "args": []}, "5": {"name": "CLDJ 36", "risk": 13.731541741472173, "pathogens": [{"name": "Providencia sp.", "Risk": 4.0, "relative_risk": 13.731541741472173, "confidence": 33.80071813285458}], "arg_classes": {}, "args": []}, "6": {"name": "Camp Lemonnier 2", "risk": 0.0, "pathogens": [], "arg_classes": {}, "args": []}, "7": {"name": "MOG 2 DFAC", "risk": 0.0, "pathogens": [{"name": "Corynebacterium sp.", "Risk": 1.0, "relative_risk": 2.673938223938225, "confidence": 53.47876447876448}, {"name": "Myroides odoratimimus", "Risk": 2.0, "relative_risk": 4.6968884120171674, "confidence": 37.57510729613734}], "arg_classes": {"CEPHALOSPORIN": 1, "SPECTINOMYCIN/STREPTOMYCIN": 1, "STREPTOMYCIN": 1}, "args": [{"name": "aminoglycoside nucleotidyltransferase", "class": "STREPTOMYCIN", "confidence": 68.44}, {"name": "extended-spectrum class A beta-lactamase", "class": "CEPHALOSPORIN", "confidence": 66.56}, {"name": "aminoglycoside nucleotidyltransferase", "class": "SPECTINOMYCIN/STREPTOMYCIN", "confidence": 68.97}]}, "8": {"name": "Mogadishu 3", "risk": 164.8947102399772, "pathogens": [{"name": "Enterobacter hormaechei", "Risk": 5.0, "relative_risk": 14.245989525909593, "confidence": 21.60529217199559}, {"name": "Klebsiella quasipneumoniae", "Risk": 6.0, "relative_risk": 36.190852910238426, "confidence": 34.830294530154276}, {"name": "Pseudomonas weihenstephanensis", "Risk": 5.0, "relative_risk": 4.436307957908584, "confidence": 6.728049983558041}, {"name": "Pantoea sp.", "Risk": 3.0, "relative_risk": 11.510060975609756, "confidence": 48.46341463414634}, {"name": "Pseudomonas sp.", "Risk": 4.0, "relative_risk": 27.68153317152104, "confidence": 68.13915857605178}, {"name": "Proteus sp.", "Risk": 4.0, "relative_risk": 2.495668671248568, "confidence": 6.1431844215349365}, {"name": "Pseudomonas sp.", "Risk": 5.0, "relative_risk": 36.66261304909561, "confidence": 55.60206718346254}, {"name": "Providencia sp.", "Risk": 3.0, "relative_risk": 0.5063983050847458, "confidence": 2.1322033898305084}, {"name": "Providencia sp.", "Risk": 4.0, "relative_risk": 17.838936031331592, "confidence": 43.911227154047}, {"name": "Enterobacter sp.", "Risk": 5.0, "relative_risk": 20.764724576271185, "confidence": 31.49152542372881}], "arg_classes": {"BETA-LACTAM": 1, "CEPHALOSPORIN": 1, "FOSFOMYCIN": 2, "GENTAMICIN/KANAMYCIN/TOBRAMYCIN": 1, "QUINOLONE": 2, "STREPTOMYCIN": 1}, "args": [{"name": "quinolone resistance pentapeptide repeat protein", "class": "QUINOLONE", "confidence": 50.46}, {"name": "fosfomycin resistance glutathione transferase", "class": "FOSFOMYCIN", "confidence": 54.68}, {"name": "aminoglycoside 6-adenylyltransferase", "class": "STREPTOMYCIN", "confidence": 57.49}, {"name": "class A beta-lactamase", "class": "BETA-LACTAM", "confidence": 52.8}, {"name": "quinolone resistance pentapeptide repeat protein", "class": "QUINOLONE", "confidence": 67.76}, {"name": "fosfomycin resistance glutathione transferase", "class": "FOSFOMYCIN", "confidence": 70.21}, {"name": "cephalosporin-hydrolyzing class C beta-lactamase", "class": "CEPHALOSPORIN", "confidence": 60.89}, {"name": "aminoglycoside nucleotidyltransferase", "class": "GENTAMICIN/KANAMYCIN/TOBRAMYCIN", "confidence": 60.45}]}};
+window.coordsToIndices = {"14.66737,-17.43951": [0], "14.76505,-17.47953": [1], "11.54056,43.15907": [2], "11.54208,43.15172": [3], "11.54276,43.16210": [4], "11.54500,43.15339": [5], "11.54288,43.14732": [6], "11.54228,43.14569": [7], "11.54073,43.16751": [8]};
+
+window.onload = function() {
+    // Initialize DataTables and store them globally
+    window.pathogenTable = $('#pathogenTable').DataTable({
+        pageLength: 10,
+        searching: true,
+        order: [[1, 'desc']]
+    });
+
+    window.argClassTable = $('#argClassTable').DataTable({
+        pageLength: 5,
+        searching: false,
+        order: [[1, 'desc']]
+    });
+
+    window.argTable = $('#argTable').DataTable({
+        pageLength: 10,
+        searching: true,
+        order: [[2, 'desc']]
+    });
+
+    console.log('Dashboard initialized. Site data loaded:', Object.keys(siteData).length, 'sites');
+
+    // Find the map object
+    let mapObj = null;
+    for (let key in window) {
+        if (window[key] instanceof L.Map) {
+            mapObj = window[key];
+            break;
+        }
+    }
+
+    if (!mapObj) {
+        console.error('Map object not found');
+        return;
+    }
+
+    // Attach click handlers to all markers by matching coordinates
+    mapObj.eachLayer(function(layer) {
+        if (layer instanceof L.Marker) {
+            layer.on('click', function(e) {
+                const lat = e.latlng.lat.toFixed(5);
+                const lng = e.latlng.lng.toFixed(5);
+                const coordKey = lat + ',' + lng;
+
+                console.log('Marker clicked at:', coordKey);
+
+                const siteIndices = window.coordsToIndices[coordKey];
+
+                if (siteIndices && siteIndices.length > 0) {
+                    // If multiple sites at same coords, prefer one with data
+                    let bestIndex = siteIndices[0];
+                    for (let i = 0; i < siteIndices.length; i++) {
+                        const idx = siteIndices[i];
+                        if (window.siteData[idx].risk > 0 ||
+                            (window.siteData[idx].pathogens && window.siteData[idx].pathogens.length > 0)) {
+                            bestIndex = idx;
+                            break;
+                        }
+                    }
+
+                    console.log('Found site index:', bestIndex, 'from', siteIndices.length, 'candidates');
+                    updateSidebar(bestIndex);
+                } else {
+                    console.error('No data found for coordinates:', coordKey);
+                    console.log('Available coordinates:', Object.keys(window.coordsToIndices));
+                }
+            });
+        }
+    });
+};
+    
+            var map_29caabfb63c45866db496db3db445268 = L.map(
+                "map_29caabfb63c45866db496db3db445268",
+                {
+                    center: [11.981023357833818, 16.6027881405617],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 4,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_14d9ce252b3cec1bbb1ae6b80fc75111 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_14d9ce252b3cec1bbb1ae6b80fc75111.addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            var marker_e4245c011d617ba8db1de585b44ddaf6 = L.marker(
+                [14.66736992052599, -17.439507764760663],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_e4245c011d617ba8db1de585b44ddaf6.bindTooltip(
+                `<div>
+                     Le Ndiambor
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_9d873a926a9e141f8f196e10c35b1e5d = L.marker(
+                [14.765045, -17.479526],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_9d873a926a9e141f8f196e10c35b1e5d.bindTooltip(
+                `<div>
+                     Fish Market
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_2e0f2cbb00434ca5f7a7ea86332a5013 = L.marker(
+                [11.540555719445743, 43.15906880987277],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_2e0f2cbb00434ca5f7a7ea86332a5013.bindTooltip(
+                `<div>
+                     MOG 2
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_c1e1f0d687f72e588fbb01ec0fffcd5b = L.marker(
+                [11.542084244035085, 43.151716877916904],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_c1e1f0d687f72e588fbb01ec0fffcd5b.bindTooltip(
+                `<div>
+                     CLDJ 70
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_5bcf3e252ff36a1c36a0d6169eee51cb = L.marker(
+                [11.54276220125816, 43.162096137440905],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_5bcf3e252ff36a1c36a0d6169eee51cb.bindTooltip(
+                `<div>
+                     MOG
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_5f8764ef70a988bfcc94550b057a8fb8 = L.marker(
+                [11.54499546040436, 43.15338570035334],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_5f8764ef70a988bfcc94550b057a8fb8.bindTooltip(
+                `<div>
+                     CLDJ 36
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_0c3bab59345968caf477b597bbc380ac = L.marker(
+                [11.542881840591697, 43.147320956522556],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_0c3bab59345968caf477b597bbc380ac.bindTooltip(
+                `<div>
+                     Camp Lemonnier 2
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_0a27b7dcbf23c9f155a644a8c0fa6b08 = L.marker(
+                [11.542283643405312, 43.14569283723712],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_0a27b7dcbf23c9f155a644a8c0fa6b08.bindTooltip(
+                `<div>
+                     MOG 2 DFAC
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_5986229e1779b62eed71ef8180bc4f51 = L.marker(
+                [11.540728324755152, 43.16750963355981],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_5986229e1779b62eed71ef8180bc4f51.bindTooltip(
+                `<div>
+                     Mogadishu 3
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var heat_map_15df38e3337464bf953899b7326f2aa0 = L.heatLayer(
+                [[14.66736992052599, -17.439507764760663, 53.47931333580529], [14.765045, -17.479526, 100], [11.540555719445743, 43.15906880987277, 13.928063866513234], [11.542084244035085, 43.151716877916904, 25.57176475033786], [11.54499546040436, 43.15338570035334, 13.731541741472173], [11.540728324755152, 43.16750963355981, 100]],
+                {
+  "minOpacity": 0.5,
+  "maxZoom": 18,
+  "radius": 25,
+  "blur": 15,
+}
+            );
+        
+    
+            heat_map_15df38e3337464bf953899b7326f2aa0.addTo(map_29caabfb63c45866db496db3db445268);
+        
+</script>
+</html>
