@@ -120,22 +120,22 @@ export default function Skills() {
 
   const SkillSection = ({ title, skills }: { title: string; skills: Skill[] }) => (
     <section className="mb-12">
-      <h2 className="text-3xl font-bold mb-6 border-b-2 border-gray-300 pb-2">{title}</h2>
+      <h2 className="text-3xl font-bold mb-6 border-b-2 border-gray-300 dark:border-gray-700 pb-2">{title}</h2>
       <div className="space-y-6">
         {skills.map((skill, index) => (
-          <div key={index} className="bg-gray-50 p-5 rounded-lg">
+          <div key={index} className="bg-gray-100 dark:bg-gray-800 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
             <h3 className="text-lg font-semibold mb-3">{skill.name}</h3>
             <div className="flex flex-wrap gap-2">
-              <span className="text-gray-600 text-sm">Applied in:</span>
+              <span className="text-gray-600 dark:text-gray-400 text-sm">Applied in:</span>
               {skill.projects.map((project, pIndex) => (
                 <span key={pIndex}>
                   <Link
                     href={project.url}
-                    className="text-blue-600 hover:text-blue-800 text-sm underline"
+                    className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm underline"
                   >
                     {project.name}
                   </Link>
-                  {pIndex < skill.projects.length - 1 && <span className="text-gray-400"> • </span>}
+                  {pIndex < skill.projects.length - 1 && <span className="text-gray-400 dark:text-gray-500"> • </span>}
                 </span>
               ))}
             </div>
@@ -149,7 +149,7 @@ export default function Skills() {
     <div className="max-w-5xl mx-auto px-6 py-12">
       <h1 className="text-4xl font-bold mb-8">Skills & Expertise</h1>
 
-      <div className="mb-8 text-lg text-gray-700">
+      <div className="mb-8 text-lg text-gray-700 dark:text-gray-300">
         <p>
           My expertise spans computational biology, data science, and molecular techniques. Each skill
           has been developed and applied across multiple research projects, demonstrating practical
@@ -161,7 +161,7 @@ export default function Skills() {
       <SkillSection title="Data Science & Machine Learning" skills={datascienceSkills} />
       <SkillSection title="Wet Lab & Sequencing" skills={wetLabSkills} />
 
-      <section className="mt-12 bg-blue-50 border-l-4 border-blue-500 p-6">
+      <section className="mt-12 bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-500 dark:border-blue-400 p-6">
         <h2 className="text-2xl font-bold mb-3">Additional Expertise</h2>
         <ul className="space-y-2 list-disc list-inside">
           <li className="text-lg">High-performance computing (HPC) and cloud infrastructure</li>
