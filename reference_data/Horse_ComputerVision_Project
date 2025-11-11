@@ -1,0 +1,212 @@
+Pose Estimation with DeepLabCut
+Training Data and Annotation
+We used two ~2-minute videos of horses filmed from the left side to train our pose estimation model. From these videos, we extracted 200 frames for manual annotation. To test the feasibility of a multi-annotator workflow, we divided the labeling between four lab members: two undergraduate students each labeled 50 frames from Video 1, and two graduate students each labeled 50 frames from Video 2.
+Annotations were performed using makesense.ai, an online annotation tool, rather than DeepLabCut's native interface. We then wrote a custom Python script to convert these annotations into DeepLabCut compatible format. For this initial test, all annotations were pooled and treated as coming from a single annotator within the DeepLabCut framework.
+Keypoint Selection
+We defined 21 body keypoints though to be important for fly worry behavior. These were focused on the left side of the horse, as this was the camera angle for our videos. These keypoints included:
+• Head/Neck: nose tip, eye left, eye right, poll
+• Torso: back, shoulder left, hip left, dock
+• Front Left Leg: knee front left, fetlock front left, hoof front left
+• Front Right Leg: knee front right, fetlock front right, hoof front right
+• Hind Left Leg: knee hind left, fetlock hind left, hoof hind left
+• Hind Right Leg: knee hind right, fetlock hind right, hoof hind right
+• Tail: tail tip
+Model Architecture and Training
+We implemented a single-animal DeepLabCut model using the PyTorch engine with a ResNet-50 backbone. To improve the model's ability to localize keypoints, we modified the default architecture by adding an intermediate layer (512 channels) in both the heatmap and location refinement (locref) heads of the network. This modification used a two-stage deconvolution process with 3×3 kernels and stride-2 upsampling.
+The model was trained for 200 epochs with a batch size of 8 using the AdamW optimizer. We employed a learning rate schedule that started at 0.0001 and decreased to 0.00001 at epoch 90, then to 0.000001 at epoch 120. The training data was split 95% for training and 5% for validation, using a single shuffle (random split).
+Key Point Model Performance
+Training was monitored across multiple metrics, with snapshot 120 (epoch 120) selected as the best-performing model based on validation performance. At this snapshot, the model achieved:
+• Test RMSE: 26.38 pixels (5.38 pixels for predictions above confidence threshold)
+• Test mAP (mean Average Precision): 87.67%
+• Test mAR (mean Average Recall): 93.33%
+We applied this model to the full ~2-minute training videos and filtered predictions using a confidence threshold of 0.6, retaining only keypoint detections with likelihood scores above this value. This filtering step was necessary to remove unreliable predictions but resulted in gaps in the data where keypoints could not be confidently detected. We generated labeled videos, as well as tracking data containing the x, y coordinates and confidence scores for each keypoint across all frames.
+Behavior Classification from Pose Data
+Behavior Annotation
+Both videos were manually annotated for three specific behaviors:
+1.  Head backs: Horse moves head backward
+2.  Tail swishes: Horse swishes tail
+3.  Leg stamps: Horse stamps a hoof
+Timestamps for each behavior were recorded and converted to frame numbers based on video frame rate. These annotations served as ground truth labels for training behavior classification models.
+Feature Engineering
+A major challenge emerged from the confidence filtering applied in Stage 1: large gaps of missing data appeared throughout the pose tracking data. This missing data was present in both training and test sets, requiring us to select models that could handle sparse, incomplete data without imputation.
+We engineered 207 features from the raw pose data to capture the dynamics and spatial relationships relevant to each behavior:
+Motion Features: We calculated velocities and accelerations for key body parts (nose_tip, poll, back, dock, tail_tip, and all four hooves). These features captured the speed and rate of change of movement, which are critical for detecting rapid behaviors like leg stamps and head movements. We also applied rolling window smoothing (5-frame windows) to reduce noise.
+Angular Features: We computed angles between body segments, including head angle (formed by nose_tip → poll → back) and tail angle (tail_tip → dock → back), along with their velocities. These captured postural changes associated with behaviors.
+Spatial Relationships: We calculated distances and heights including tail height (back_y - tail_tip_y), head height (back_y - nose_tip_y), nose-to-tail distance, front hooves spread, and hind hooves spread. These spatial features helped distinguish behaviors that involved specific body configurations.
+Temporal Context: We added temporal context by computing statistics (mean, standard deviation, maximum, minimum) over multiple time windows:
+• Short-term windows (10 frames, ~0.3 seconds at 30fps)
+• Medium-term windows (30 frames, ~1 second)
+These temporal features allowed the model to consider recent history when making predictions, as behaviors often unfold over time rather than in single frames.
+Confidence Metrics: We included mean, minimum, and standard deviation of the likelihood scores from DeepLabCut predictions as features, allowing the model to potentially learn when predictions were unreliable.
+Model Selection and Training
+We tested four different modeling approaches:
+1.  Random Forest
+2.  XGBoost
+3.  LightGBM
+4.  Temporal CNN-LSTM with attention (deep learning)
+LightGBM performed best and was selected for final predictions. LightGBM was particularly well-suited to our data because it natively handles missing values without requiring imputation, unlike many other algorithms. This was crucial given the gaps in our pose tracking data.
+The model was configured with 500 estimators, maximum depth of 8, and a learning rate of 0.05.
+We used a temporal data split to evaluate the model: the first 15% of each video served as the test set, and the last 85% as the training set. This resulted in 7,536 training frames and 1,328 test frames across both videos. This temporal split better simulated real-world deployment where the model would need to generalize to new, unseen portions of video.
+Post-Processing
+To reduce false positive/negative predictions (Single frames switching between behavior present/absent), we applied temporal smoothing:
+• Median filtering with a 5-frame window
+• Minimum duration filter requiring behaviors to persist for at least 20 frames (~0.67 seconds)
+• Gap filling for brief interruptions in detected behaviors
+This smoothing reduced prediction transitions by 67.9%, creating more stable and interpretable behavior timelines.
+Classification Performance
+The final smoothed model achieved the following performance on the test set:
+• Overall: 41.0% exact match accuracy (all three behaviors correct simultaneously)
+• Head backs: F1 = 0.740 (Precision = 0.81, Recall = 0.68)
+• Tail swishes: F1 = 0.847 (Precision = 0.77, Recall = 0.94)
+• Leg stamps: F1 = 0.422 (Precision = 0.53, Recall = 0.35)
+As a proof-of-concept for quantifying behavior characteristics, we calculated the velocity of hoof movements during detected leg stamps to estimate the "strength" or intensity of stomping behaviors. This demonstrated the potential for pose-based approaches to not only detect behaviors but also characterize their qualities.
+Limitations and Future Directions
+Current Limitations
+Several limitations were identified in this initial implementation:
+Limited Training Data: With only two ~2-minute videos, we had insufficient data to train robust behavior classification models. This was particularly problematic for the deep learning approach (CNN-LSTM), which typically requires substantially more training examples to perform well.
+Class Imbalance: Tail swishing occurred in approximately 81% of frames, making it difficult for the model to learn when the behavior was not occurring. Conversely, leg stamps were present in only 31% of frames, providing too few positive examples to train models for each leg.
+Multi-Leg Aggregation: We trained a single model to detect leg stamps from all four legs simultaneously. This confused the model because different legs had vastly different tracking quality due to occlusion. The right legs were frequently occluded by the left legs (given our camera angle), resulting in poor tracking. Training separate models for each leg, or focusing only on well-tracked legs, would likely improve performance.
+Suboptimal Keypoint Selection: Many of our behavioral features relied on hoof tip positions, which had poor tracking quality due to being small, fast-moving, and often occluded. The fetlock joints would have been better choices for these calculations as they were larger, more stable, and better tracked by the pose estimation model. Future models will expand to include many more key point interactions and features.
+Tail Tracking Challenges: The tail presented unique tracking difficulties. During swishing, the tail spreads out and changes shape dramatically, and it can also cross to the opposite side of the body. A single tail_tip keypoint was insufficient to capture this complex motion, leading to tracking gaps and reduced performance on tail swish detection despite the behavior's high frequency. Future models will require more annotation to fully capture tail tips.
+Missing Data Propagation: The 0.6 confidence threshold filtering created gaps in the raw pose data, which then propagated through all derived features (velocities, accelerations, angles, etc.). While LightGBM handled missing data better than alternatives, this still impacted overall performance. Due to the novel nature of this datasets (these models are most often applied in laboratory controlled settings) there are not sufficient models for imputation the missing data from our datasets. Developing a model to impute some of the missing data would vastly improve future work.
+For the next iteration, we plan to collect longer videos that capture horses from both the left and right sides under varying conditions. This will address both the limited data problem and the single-angle occlusion issues. With more diverse training data, we expect to develop more robust behavior classification models and potentially leverage deep learning approaches that require larger datasets.
+
+
+
+----
+
+poster:
+Oh bother! Model development for quantification of animal fly worry behaviors
+Victoria Pickens1, Edward Bird, Camden Farrow1, Skyler Lea2, Matthew Norton2, Mollie Toth1, Reese Witherspoon2, Cheyenne Town3, David Martell1, Cassandra Olds1
+1Department of Entomology; 2Department of Animal Sciences & Industry; 3College of Veterinary Medicine, Kansas State University, Manhattan, KS
+Introduction
+Background
+• The number of biting flies per animal does not
+necessarily correlate with impact on animal health,
+and can vary between individual animals.
+• Human annotation quantifying the number of flies
+per animal or fly worry behaviors are often limited
+by resources, and can vary between annotators.
+• Automated annotation of fly worry behaviors has the
+potential to standardize and rapidly analyze
+quantifiable impacts of biting flies on animals.
+Objective: Develop a model to measure
+fly worry behaviors in livestock.
+Step 1: Point Detection
+Step 2: Behavior Estimation
+Behaviors:
+Head Back H M
+Tail Swish H M
+Leg Stamp H M
+Behaviors:
+Head Back H M
+Tail Swish H M
+Leg Stamp H M
+Step 3: Movement Intensity
+Discussion & Future Directions
+References
+Method
+• Currently available
+models for
+quadrupeds are not
+efficient for
+measuring fly worry
+behaviors of horses
+(Fig. 1)
+Method
+• Using the same 2-minute videos of each horse, two human annotators recorded start and stop times of three
+fly worry behaviors : -> head backs (touching of the nose to a leg or the body) -> tail swishing -> leg stamps
+• 85% of each human annotated video was used to train 1 model for each fly worry behavior
+• Using the 60% cutoff, data from the point detection model was filtered and used to calculate additional features
+(velocity, acceleration angles, relative positions, body part interactions) for each frame
+• Fed additional feature data for each fly worry behavior into a light gradient boost model
+• Fly worry behaviors were then predicted by the trained models using the first 15% of each video and
+compared to three human annotators
+Results
+• 2-minute videos were taken of two horses grazing on
+hay in a small enclosure during mid-summer
+• Four human annotators marked 21 key body points
+from 191 frames of the videos
+• Horse 1 = 91 frames
+• Horse 2 = 100 frames
+• Using DeepLabCut v.3.0, a Resnet 50 neural network
+was trained on 95% of both datasets
+• The remaining 5% of the videos used for testing the
+model on each horse
+Model Statistic Value
+Avg. precision of model 87.67%
+Model avg. recall 93.33%
+Avg. RMSE of predicted points 22.65 pixels
+Avg. RMSE of predicted points with cutoff of
+60% confidence
+5.37 pixels
+Behaviors Present Precision Present Recall Absent Precision Absent Recall
+Head back 81% 68% 85% 92%
+Tail swish 77% 94% 56% 20%
+Leg stamp 53% 35% 71% 84%
+Fig 1. Quadruped model overlay for horse 1.
+a) b)
+Fig 2. Skeleton overlay of point detection model for horse 1 (a) and
+horse 2(b).
+Table 1. Precision and accuracy statistics of point detection model.
+• Mathis, et al. 2018. DeepLabCut: markerless pose estimation of user-defined
+body parts with deep learning. Nat. Neurosci. 21: 1281-89.
+• Ke, et al. 2017. LightGBM: A highly efficient gradient boosting decision tree.
+Adv. Neural Inf. Process. Syst. 30.
+• Ye, et al. 2024. SuperAnimal pretrained pose estimation models for behavioral
+analysis. Nat. Commun. 15: 5165.
+Table 2. Precision and accuracy statistics of fly worry behavior models.
+Findings
+• Despite limited training data, promising models were
+created and measured both frequency and intensity of
+horse fly worry behaviors
+• Optimal procedures were developed for gathering and
+annotating fly worry behaviors of horses to be used in
+future research
+Future Directions
+• Perform data imputation to fill in missing points of
+models
+• Apply models in future experiments investigating factors
+associated with fly worry behaviors and animal health for
+horses and other livestock
+Fig 9. Skeleton overlay of point detection model for cow.
+Method
+• Calculated mm per pixel based on leg measurement
+and prior additional features measured in model
+• Velocity averaged across 1/10 second (3 frames)
+Results
+Fig 8. Estimated velocity of fetlock during a leg stamp for horse 2.
+a) b) c)
+d) e)
+Velocity
+a) 0.29 meters/sec
+b) 0.96 meters/sec
+c) 0.49 meters/sec
+d) 0.94 meters/sec
+e) 0.80 meters/sec
+Fig 3. Overlay of fly worry behaviors predicted by human
+annotator (H) versus model (M) for video of horse 1.
+Fig 4. Overlay of fly worry behaviors predicted by human
+annotator (H) versus model (M) for video of horse 2.
+Fig 5. Total events of fly worry behaviors recorded by human
+annotators versus the model for test data of horse 1 video.
+Fig 6. Total events of fly worry behaviors recorded by human
+annotators versus the model for test data of horse 2 video.
+Fig 7. Duration of fly worry behaviors in video of horse 1 predicted by the model (b) versus the human annotation (a).
+a) b)
+0
+5
+10
+15
+head_back tail_swish leg_stamp
+Number of Events
+Human 1 Human 2 Human 3 Model
+0
+5
+10
+15
+20
+25
+head_back tail_swish leg_stamp
+Number of Events
+Human 1 Human 2 Human 3 Model
