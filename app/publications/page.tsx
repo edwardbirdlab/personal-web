@@ -1,7 +1,7 @@
 export default function Publications() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-12">
-      <h1 className="text-4xl font-bold mb-8">Publications</h1>
+      <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100">Publications</h1>
 
       {/* In Review - 2025 */}
       <section className="mb-12">
@@ -104,7 +104,7 @@ export default function Publications() {
           <li className="text-lg leading-relaxed">
             <span className="font-medium">Doerksen, T., Bird, E., Henningson, J., Palinski, R.</span> (2021).
             Near-complete Vesicular Stomatitis Virus genomes from the 2020 outbreak in Kansas.
-            <em className="text-gray-600"> American Society for Microbiology.</em>
+            <em className="text-gray-600 dark:text-gray-400"> American Society for Microbiology.</em>
           </li>
         </ol>
       </section>

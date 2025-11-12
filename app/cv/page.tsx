@@ -12,7 +12,7 @@ export default function CV() {
 
       {/* Education */}
       <section className="mb-10">
-        <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-800 dark:border-gray-200 pb-2">Education</h2>
+        <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-300 dark:border-gray-700 pb-2">Education</h2>
         <div className="space-y-4">
           <div>
             <h3 className="text-xl font-semibold">PhD in Genetics, Interdepartmental Genetics | August 2025</h3>
@@ -33,13 +33,13 @@ export default function CV() {
 
       {/* Experience */}
       <section className="mb-10">
-        <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-800 dark:border-gray-200 pb-2">Experience</h2>
+        <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-300 dark:border-gray-700 pb-2">Experience</h2>
         <div className="space-y-6">
           <div>
             <h3 className="text-xl font-semibold">Postdoctoral Researcher | August 2025–Current</h3>
             <p className="text-gray-700 dark:text-gray-300 font-medium">ORISE, United States Department of Agriculture – Arthropod Borne Disease Research Unit</p>
             <p className="text-gray-600 dark:text-gray-400 mb-2">Manhattan, KS | Supervisor: Dana Nayduch</p>
-            <ul className="list-disc list-inside space-y-1 ml-4">
+            <ul className="list-disc list-inside space-y-1 ml-4 text-gray-800 dark:text-gray-200">
               <li>Develop and implement computational solutions for pathogen surveillance and epidemiological tracking</li>
               <li>Lead bioinformatics tool and pipeline development</li>
               <li>Design risk assessment frameworks and geospatial mapping of pathogen and AMR distribution</li>
@@ -51,7 +51,7 @@ export default function CV() {
             <h3 className="text-xl font-semibold">Graduate Research Assistant | August 2020–2025</h3>
             <p className="text-gray-700 dark:text-gray-300 font-medium">Kansas State University & USDA-ABADRU</p>
             <p className="text-gray-600 dark:text-gray-400 mb-2">Supervisor: Kristopher Silver</p>
-            <ul className="list-disc list-inside space-y-1 ml-4">
+            <ul className="list-disc list-inside space-y-1 ml-4 text-gray-800 dark:text-gray-200">
               <li>Nextflow pipeline development for high-throughput genomic analysis and metagenomics</li>
               <li>Eukaryotic genome assembly and annotation using long-read and hybrid sequencing</li>
               <li>Comparative transcriptomics analysis of vector-pathogen interactions</li>
@@ -64,7 +64,7 @@ export default function CV() {
             <h3 className="text-xl font-semibold">Research Assistant | November 2019–2020</h3>
             <p className="text-gray-700 dark:text-gray-300 font-medium">Next Generation Sequencing Lab, Veterinary Diagnostic Laboratory</p>
             <p className="text-gray-600 dark:text-gray-400 mb-2">Kansas State University | Supervisor: Rachel Palinski</p>
-            <ul className="list-disc list-inside space-y-1 ml-4">
+            <ul className="list-disc list-inside space-y-1 ml-4 text-gray-800 dark:text-gray-200">
               <li>Independent research on genomic factors contributing to pathogenicity of Histophilus somni</li>
               <li>Development of multiplex PCR and whole genome sequencing workflows</li>
               <li>DNA/RNA extraction and library preparation for Illumina and MinION platforms</li>
@@ -76,7 +76,7 @@ export default function CV() {
             <h3 className="text-xl font-semibold">Research Technician | August 2019–November 2019</h3>
             <p className="text-gray-700 dark:text-gray-300 font-medium">Integrated Genomics Facility, Plant Pathology Department</p>
             <p className="text-gray-600 dark:text-gray-400 mb-2">Kansas State University | Supervisor: Alina Akhunova</p>
-            <ul className="list-disc list-inside space-y-1 ml-4">
+            <ul className="list-disc list-inside space-y-1 ml-4 text-gray-800 dark:text-gray-200">
               <li>DNA and RNA library preparation and quality control</li>
               <li>Sample preparation and loading of Illumina NextSeq and MiSeq platforms</li>
               <li>Qualitative and quantitative analysis using qPCR, Qubit, Bioanalyzer, and Tape Station</li>
@@ -87,7 +87,7 @@ export default function CV() {
             <h3 className="text-xl font-semibold">Undergraduate Research Assistant | February 2017–July 2019</h3>
             <p className="text-gray-700 dark:text-gray-300 font-medium">National Institute of Microbial Forensics & Food and Agricultural Biosecurity</p>
             <p className="text-gray-600 dark:text-gray-400 mb-2">Oklahoma State University | Supervisor: Astri Wayadande</p>
-            <ul className="list-disc list-inside space-y-1 ml-4">
+            <ul className="list-disc list-inside space-y-1 ml-4 text-gray-800 dark:text-gray-200">
               <li>Assembly and annotation of six leafhopper genomes</li>
               <li>Genomic and transcriptomic comparisons for host specificity studies</li>
               <li>Annotation of flesh fly and rat microbiomes</li>
@@ -98,8 +98,8 @@ export default function CV() {
 
       {/* Awards */}
       <section className="mb-10">
-        <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-800 dark:border-gray-200 pb-2">Awards and Scholarships</h2>
-        <ul className="list-disc list-inside space-y-2 ml-4">
+        <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-300 dark:border-gray-700 pb-2">Awards and Scholarships</h2>
+        <ul className="list-disc list-inside space-y-2 ml-4 text-gray-800 dark:text-gray-200">
           <li>Schendel-Mages Fellowship, Kansas State University Entomology (2024) — $650</li>
           <li>Abstract of Excellence Award, Bionexus Kansas City (2024) — $200</li>
           <li>Graduate Student of the Month, College of Agriculture, Kansas State University (January 2023)</li>
@@ -112,8 +112,8 @@ export default function CV() {
 
       {/* Service */}
       <section className="mb-10">
-        <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-800 dark:border-gray-200 pb-2">Service</h2>
-        <ul className="list-disc list-inside space-y-2 ml-4">
+        <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-300 dark:border-gray-700 pb-2">Service</h2>
+        <ul className="list-disc list-inside space-y-2 ml-4 text-gray-800 dark:text-gray-200">
           <li>Bioinformatics Mentorship (2022–Present)</li>
           <li>Undergraduate Research Experience Mentor (2022)</li>
           <li>Graduate Student Council Representative, Popenoe Entomology Club (2022)</li>
@@ -124,7 +124,7 @@ export default function CV() {
 
       {/* Skills Summary */}
       <section className="mb-10">
-        <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-800 dark:border-gray-200 pb-2">Skills Summary</h2>
+        <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-300 dark:border-gray-700 pb-2">Skills Summary</h2>
         <div className="space-y-4">
           <div>
             <h3 className="text-lg font-semibold mb-2">Bioinformatics & Pipeline Development</h3>
@@ -145,8 +145,8 @@ export default function CV() {
 
       {/* Publications Note */}
       <section className="bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-500 dark:border-blue-400 p-6">
-        <h2 className="text-2xl font-bold mb-3">Publications</h2>
-        <p className="text-lg">
+        <h2 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">Publications</h2>
+        <p className="text-lg text-gray-800 dark:text-gray-200">
           For a complete list of publications, presentations, and detailed research descriptions,
           please visit the{' '}
           <a href="/publications" className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline font-medium">

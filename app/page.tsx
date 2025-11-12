@@ -5,11 +5,11 @@ export default function Home() {
     <div className="max-w-7xl mx-auto px-6 py-12">
       {/* Hero Section */}
       <section className="mb-16">
-        <h1 className="text-4xl font-bold mb-4">Edward Bird, PhD</h1>
+        <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">Edward Bird, PhD</h1>
         <p className="text-xl text-gray-600 dark:text-gray-300 mb-6">
           Bioinformatician | Postdoctoral Researcher | ORISE at USDA-ABADRU
         </p>
-        <div className="text-lg space-y-2">
+        <div className="text-lg space-y-2 text-gray-800 dark:text-gray-200">
           <p><strong>Location:</strong> Manhattan, Kansas</p>
           <p><strong>Email:</strong> <a href="mailto:edwardbird@ksu.edu" className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">edwardbird@ksu.edu</a></p>
           <p><strong>Phone:</strong> <a href="tel:4052743539" className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">(405) 274-3539</a></p>
@@ -18,8 +18,8 @@ export default function Home() {
 
       {/* About Me Section */}
       <section className="mb-16">
-        <h2 className="text-3xl font-bold mb-6 border-b-2 border-gray-300 dark:border-gray-700 pb-2">About Me</h2>
-        <div className="text-lg leading-relaxed space-y-4">
+        <h2 className="text-3xl font-bold mb-6 border-b-2 border-gray-300 dark:border-gray-700 pb-2 text-gray-900 dark:text-gray-100">About Me</h2>
+        <div className="text-lg leading-relaxed space-y-4 text-gray-800 dark:text-gray-200">
           <p>
             I am a computational biologist based in Manhattan, Kansas, specializing in developing and applying software-driven 
             approaches to biological and agricultural research. My work focuses on creating reproducible workflows and 
@@ -48,20 +48,20 @@ export default function Home() {
 
       {/* Education Section */}
       <section className="mb-16">
-        <h2 className="text-3xl font-bold mb-6 border-b-2 border-gray-300 dark:border-gray-700 pb-2">Education</h2>
+        <h2 className="text-3xl font-bold mb-6 border-b-2 border-gray-300 dark:border-gray-700 pb-2 text-gray-900 dark:text-gray-100">Education</h2>
         <div className="space-y-6">
           <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-            <h3 className="text-2xl font-semibold mb-2">PhD in Genetics</h3>
+            <h3 className="text-2xl font-semibold mb-2 text-gray-900 dark:text-gray-100">PhD in Genetics</h3>
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-2">Kansas State University | August 2025</p>
             <p className="text-gray-600 dark:text-gray-400 italic">Interdepartmental Genetics</p>
-            <p className="mt-3">
+            <p className="mt-3 text-gray-800 dark:text-gray-200">
               <strong>Dissertation:</strong> Genomic Resources and Bioinformatics Pipelines for Vector-Pathogen Research:
               Chromosome-Scale Genome Assembly and Transcriptomic Analysis of Insect-Pathogen Interactions in Culicoides
               sonorensis with Metagenomic Surveillance of Antimicrobial Resistance in House Flies
             </p>
           </div>
           <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-            <h3 className="text-2xl font-semibold mb-2">BS in Microbiology, Molecular and Cellular Biology</h3>
+            <h3 className="text-2xl font-semibold mb-2 text-gray-900 dark:text-gray-100">BS in Microbiology, Molecular and Cellular Biology</h3>
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-2">Oklahoma State University | May 2019</p>
             <p className="text-gray-600 dark:text-gray-400">
               <strong>Degree Option:</strong> Research
@@ -75,7 +75,7 @@ export default function Home() {
 
       {/* Current Research Projects Section */}
       <section className="mb-16">
-        <h2 className="text-3xl font-bold mb-6 border-b-2 border-gray-300 dark:border-gray-700 pb-2">Current Research Projects</h2>
+        <h2 className="text-3xl font-bold mb-6 border-b-2 border-gray-300 dark:border-gray-700 pb-2 text-gray-900 dark:text-gray-100">Current Research Projects</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <Link href="/projects/metagenomic-surveillance" className="block bg-gray-50 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 p-6 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:shadow-lg transition-all">
             <h3 className="text-xl font-semibold mb-3 text-blue-600 dark:text-blue-400">
@@ -121,7 +121,7 @@ export default function Home() {
 
       {/* Previous Research Projects Section */}
       <section className="mb-16">
-        <h2 className="text-3xl font-bold mb-6 border-b-2 border-gray-300 dark:border-gray-700 pb-2">Previous Research Projects</h2>
+        <h2 className="text-3xl font-bold mb-6 border-b-2 border-gray-300 dark:border-gray-700 pb-2 text-gray-900 dark:text-gray-100">Previous Research Projects</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <Link href="/projects/transcriptomics-vector-competence" className="block bg-gray-100 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 p-6 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:shadow-lg transition-all">
             <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-gray-200">

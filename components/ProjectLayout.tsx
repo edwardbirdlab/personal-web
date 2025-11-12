@@ -19,12 +19,12 @@ export default function ProjectLayout({
         ← Back to Home
       </Link>
 
-      <h1 className="text-4xl font-bold mb-8">{title}</h1>
+      <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100">{title}</h1>
 
       {/* Associated Papers */}
       {papers.length > 0 && (
         <div className="bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-500 dark:border-blue-400 p-6 mb-8">
-          <h2 className="text-2xl font-bold mb-4">Associated Publications</h2>
+          <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Associated Publications</h2>
           <ul className="space-y-3">
             {papers.map((paper, index) => (
               <li key={index}>
@@ -48,7 +48,7 @@ export default function ProjectLayout({
       {/* Associated Repositories */}
       {repositories.length > 0 && (
         <div className="bg-gray-50 dark:bg-gray-800 border-l-4 border-gray-500 dark:border-gray-400 p-6 mb-8">
-          <h2 className="text-2xl font-bold mb-4">Code Repositories</h2>
+          <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Code Repositories</h2>
           <ul className="space-y-2">
             {repositories.map((repo, index) => (
               <li key={index}>

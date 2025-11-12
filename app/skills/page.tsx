@@ -124,7 +124,7 @@ export default function Skills() {
       <div className="space-y-6">
         {skills.map((skill, index) => (
           <div key={index} className="bg-gray-100 dark:bg-gray-800 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
-            <h3 className="text-lg font-semibold mb-3">{skill.name}</h3>
+            <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-gray-100">{skill.name}</h3>
             <div className="flex flex-wrap gap-2">
               <span className="text-gray-600 dark:text-gray-400 text-sm">Applied in:</span>
               {skill.projects.map((project, pIndex) => (
@@ -147,7 +147,7 @@ export default function Skills() {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-12">
-      <h1 className="text-4xl font-bold mb-8">Skills & Expertise</h1>
+      <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100">Skills & Expertise</h1>
 
       <div className="mb-8 text-lg text-gray-700 dark:text-gray-300">
         <p>
@@ -162,8 +162,8 @@ export default function Skills() {
       <SkillSection title="Wet Lab & Sequencing" skills={wetLabSkills} />
 
       <section className="mt-12 bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-500 dark:border-blue-400 p-6">
-        <h2 className="text-2xl font-bold mb-3">Additional Expertise</h2>
-        <ul className="space-y-2 list-disc list-inside">
+        <h2 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">Additional Expertise</h2>
+        <ul className="space-y-2 list-disc list-inside text-gray-800 dark:text-gray-200">
           <li className="text-lg">High-performance computing (HPC) and cloud infrastructure</li>
           <li className="text-lg">Version control with Git and collaborative development</li>
           <li className="text-lg">Scientific writing and manuscript preparation</li>
