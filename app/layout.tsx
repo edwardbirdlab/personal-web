@@ -13,10 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
+    <html lang="en" className="bg-white dark:bg-gray-950">
+      <body className="antialiased bg-white dark:bg-gray-950">
         <Navigation />
-        <main className="min-h-screen">
+        <main className="min-h-screen bg-white dark:bg-gray-950">
           {children}
         </main>
         <footer className="bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-8 mt-16">
