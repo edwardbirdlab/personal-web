@@ -1,82 +1,96 @@
 import ProjectLayout from '@/components/ProjectLayout';
+import DashboardEmbed from '@/components/DashboardEmbed';
 
 export const metadata = {
-  title: 'Risk Mapping for Force Health Protection',
+  title: 'Xenosurveillance and Risk Mapping for Force Health Protection',
 };
 
 <ProjectLayout
-  title="Risk Mapping for Force Health Protection"
+  title="Xenosurveillance and Risk Mapping for Force Health Protection"
+  papers={[
+    {
+      title: "Filth fly xenosurveillance for pathogen detection and risk assessment",
+      url: "#",
+      journal: "In Preparation - 2025"
+    }
+  ]}
 >
 
-## Introduction
+## Flies as Biological Sensors
 
-This project develops computational frameworks and geospatial mapping approaches to assess pathogen and antimicrobial resistance (AMR) distribution in novel environments. The goal is to provide actionable intelligence for force health protection and biosecurity risk assessment.
+The goal of this project is to utilize filth flies as biological sensors to identify potential pathogens and human health threats in novel environments. This innovative approach takes advantage of the natural behavior of filth flies to provide early warnings for existing and emerging human health risks.
 
-By integrating metagenomic surveillance data with environmental, climatic, and demographic factors, we create predictive risk maps that identify high-risk areas and inform targeted interventions.
+Filth flies are uniquely suited to act as environmental sampling tools due to their biology and behavior. These flies are naturally drawn to microbe-rich environments such as animal waste and decaying organic matter, which are also places where harmful bacteria and pathogens concentrate. As flies move through these environments seeking food sources and sites to lay eggs, they inadvertently collect microorganisms on their bodies and in their digestive systems. Unlike traditional environmental sampling that requires researchers to know exactly where to look, flies do this work autonomously, effectively sampling their environment continuously as they go about their daily activities.
 
-## Methods and Results
+This behavior makes filth flies excellent for xenosurveillance—acting as biological collectors that can tell us what microbes are present in an environment without requiring exhaustive sampling of every potential contamination site. Research has demonstrated that the microbial communities carried by multiple filth fly species, including house flies and blow flies, accurately represent their surrounding environment in both time and space, making them reliable indicators of what pathogens and antimicrobial-resistant bacteria may be present at a given location.
 
-### Data Integration Framework
+## Our Surveillance Approach
 
-The risk mapping pipeline integrates multiple data sources:
+Our surveillance approach is straightforward yet powerful. We collect filth flies from any environment of interest. Flies are then pooled by collection site and date, and their DNA and RNA are extracted and sequenced using high-throughput metagenomics methods. This unbiased approach allows us to identify all genetic material present in the samples, eliminating the need for time-consuming lab cultures or the selective molecular detection of pathogens.
 
-- **Metagenomic surveillance data**: Pathogen and AMR gene detections from environmental samples
-- **Geospatial coordinates**: GPS locations of sampling sites
-- **Environmental variables**: Temperature, humidity, precipitation, land use
-- **Demographic data**: Population density, livestock density, healthcare access
-- **Infrastructure data**: Water systems, sanitation, agricultural practices
+After obtaining sequence data, we employ a custom-built analysis pipeline and specialized databases to identify the microorganisms from each fly and provide a confidence level for each detection. This includes not only pathogenic bacteria, but also antimicrobial resistance genes (ARGs) that could compromise treatment options if these bacteria were to cause infections.
 
-### Risk Assessment Models
+The raw identification data is then transformed into actionable intelligence through our risk assessment framework. We evaluate multiple factors including the types of microorganisms detected, their pathogenicity, the confidence of detection, and other contextual variables. These metrics feed into an adjustable risk model that estimates the relative threat level at each surveillance site.
 
-Statistical and machine learning approaches include:
+## Interactive Risk Dashboard
 
-- **Spatial interpolation**: Kriging and inverse distance weighting for continuous risk surfaces
-- **Cluster analysis**: Identifying hotspots of pathogen or resistance occurrence
-- **Predictive modeling**: Random forest and ensemble methods for risk prediction
-- **Time-series analysis**: Tracking temporal trends in pathogen emergence
+To make this complex information accessible, we have developed an interactive dashboard that visualizes risk patterns and allows users to explore results in detail. This tool enables stakeholders to quickly understand the pathogen and resistance profiles at all monitored sites. By understanding what pathogens and resistance genes are present and how they change over time and across locations, we can better protect human health, inform targeted intervention strategies, and allocate resources more effectively to address the most significant risks.
 
-### Visualization and Reporting
+<DashboardEmbed
+  src="/personal-web/risk-dashboard.html"
+  title="Pathogen Risk Assessment Dashboard"
+  height="700px"
+/>
 
-Interactive mapping tools provide:
+**Important Note:** The locations shown in this example dashboard were chosen at random, and all data including risk scores are randomized for demonstration purposes only. This is simply an example of the interface functionality. The dashboard will be updated with real samples and data upon publication when the work is formally released.
 
-- Heat maps of pathogen prevalence
-- AMR gene distribution across regions
-- Risk scores for novel environments
-- Temporal evolution of risk patterns
+### Using the Dashboard
 
-## Discussion and Future Work
+The dashboard consists of two main panels: a zoomable map on the left displaying a heatmap of site risk values, with warmer colors indicating higher risk levels, and a detailed information panel on the right.
 
-### Current Applications
+To explore the data, simply click on any marker on the map to populate the right panel with site-specific information. The overall risk value for that site is displayed at the top. Below this are three tabs you can select to view different types of data:
 
-Risk mapping frameworks are being applied to:
+**Pathogens Tab:** Displays each detected organism along with its associated human health risk category. The confidence of detection for each organism is shown on a scale of 0-100, along with a relative risk score. In the current iteration of the model, relative risk combines detection confidence with the pathogen's known health threat level.
 
-1. **Military deployment sites**: Assessing health threats in forward operating bases
-2. **Agricultural operations**: Mapping AMR in livestock production areas
-3. **Disaster response**: Rapid risk assessment for emergency scenarios
-4. **Border security**: Monitoring cross-border pathogen movement
+**ARG Classes Tab:** Shows the distribution of antibiotic resistance classes detected and the number of genes identified within each category, visualized both as a chart and a table.
 
-### Future Directions
+**ARGs Tab:** Lists individual antimicrobial resistance genes detected, including the name of each gene, which antibiotic class it confers resistance to, and the confidence of detection.
 
-Planned enhancements include:
+## Technical Challenges and Solutions
 
-- **Real-time updates**: Integration with ongoing surveillance for dynamic risk maps
-- **Multi-pathogen models**: Simultaneous assessment of multiple health threats
-- **Climate change scenarios**: Projecting future risk under different climate models
-- **Mobile applications**: Field-deployable risk assessment tools
-- **Validation studies**: Ground-truthing predictions with targeted sampling
-- **International collaboration**: Expanding geographic coverage
+While this surveillance approach shows significant promise, we have identified important technical limitations that affect our detection capabilities. The primary challenge we currently face is that a substantial portion of our sequencing data is represented by the genetic material of the flies themselves rather than the microorganisms they carry. In many samples, between 90-99% of the sequence data is of fly origin rather than microbial origin. This means that only a small fraction of our sequencing effort is informative for identifying pathogenic threats.
 
-### Impact
+This high level of host contamination has direct implications for pathogen detection. Our analysis has revealed that there is a minimum sequencing depth threshold that must be achieved before we can reliably identify pathogenic organisms present in fly samples. When sequencing is relatively shallow, the combination of high fly DNA/RNA content and low microbial content means that insufficient microbial sequences are captured to confidently detect pathogens.
 
-This work provides critical intelligence for:
+Recognizing this limitation, we are actively developing improved methodologies to reduce the proportion of genetic material represented by the fly in our samples. Preliminary investigations into techniques for limiting fly-derived sequences have shown significant progress, substantially increasing the proportion of microbial sequence data. This represents a major step forward in making this surveillance approach more cost-effective and practical for routine use. As we continue to optimize these sample preparation methods, we expect detection sensitivity to improve substantially, allowing us to identify pathogenic threats with lower sequencing depths and reduced per-sample costs. These ongoing improvements will be incorporated into future surveillance efforts.
 
-- Military force health protection
-- Public health preparedness
-- Agricultural biosecurity
-- International travel medicine
-- Outbreak response planning
+## A Flexible, Adaptable Framework
 
-*Maps, risk visualization examples, and case studies will be added.*
+The surveillance system presented here was designed with flexibility and adaptability in mind. While this project focuses on the analysis of filth flies, the entire framework for the genomic data analysis workflow and the interactive dashboard can be readily adapted to accommodate different sample types and surveillance scenarios.
+
+The modular design allows for straightforward integration of other arthropods such as mosquitoes, ticks, or cockroaches, which could provide complementary surveillance data for vector-borne diseases in their respective ecological niches. The system could also accommodate standard environmental or medical collections such as swab tests or soil samples. Multiple sample types could be analyzed simultaneously, enabling comprehensive environmental monitoring across different reservoirs and vector species at the same time.
+
+The risk assessment model itself is highly configurable, with adjustable parameters that can be tuned for specific objectives. For instance, the balance between accuracy and sensitivity can be adjusted depending on whether the priority is minimizing false positives or ensuring no potential threats are missed. In future iterations, we envision implementing user-adjustable controls that allow real-time modification of these parameters through the dashboard interface, enabling different stakeholders to customize the risk assessment to their specific needs and risk tolerance.
+
+The dashboard architecture is equally adaptable and can integrate diverse data sources beyond arthropod surveillance. Public health records, disease case reports, environmental monitoring data, or other types of information could all be incorporated into the visualization framework, creating a comprehensive platform for specific needs or goals.
+
+## Impact and Applications
+
+This flexible surveillance framework has the potential to enhance human health protection through early detection of pathogenic threats in novel or understudied environments where traditional surveillance infrastructure may be limited or absent. Equally important, the system enables continuous monitoring of known environments to detect the emergence of new pathogenic strains or antimicrobial resistance patterns before they become widespread public health concerns.
+
+Potential applications include:
+
+- **Military deployment sites**: Assessing health threats in forward operating bases and novel environments
+- **Border security**: Monitoring cross-border pathogen movement and emerging threats
+- **Agricultural operations**: Mapping AMR in livestock production areas
+- **Disaster response**: Rapid risk assessment for emergency scenarios where traditional infrastructure is compromised
+- **Public health surveillance**: Early warning systems for urban and rural environments
+
+By providing actionable intelligence through an accessible interface, this platform empowers decision-makers to respond proactively to evolving health threats, ultimately contributing to more effective disease prevention and public health preparedness.
+
+---
+
+*For questions about this work or to request access to the dashboard framework, please contact me.*
 
 </ProjectLayout>
 

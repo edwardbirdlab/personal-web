@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_29caabfb63c45866db496db3db445268 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/gh/python-visualization/folium@main/folium/templates/leaflet_heat.min.js"></script>
+</head>
+<body>
+    
+    
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<style>
+  #sidebar {
+    font-size: 12px;
+  }
+  #sidebar h2 {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  #sidebar h3 {
+    font-size: 14px;
+    margin: 8px 0 4px 0;
+  }
+  .tab-buttons {
+    margin: 10px 0;
+  }
+  .tab-buttons button {
+    padding: 6px 10px;
+    margin-right: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 3px;
+  }
+  .tab-buttons button:hover {
+    background: #e0e0e0;
+  }
+  .tab-buttons button.active {
+    background: #4CAF50;
+    color: white;
+  }
+  .risk-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin: 5px 0;
+  }
+  .risk-high { background: #ff4444; color: white; }
+  .risk-medium { background: #ffaa00; color: white; }
+  .risk-low { background: #44ff44; color: black; }
+  table.dataTable {
+    font-size: 11px !important;
+  }
+  table.dataTable thead th {
+    padding: 6px 8px !important;
+  }
+  table.dataTable tbody td {
+    padding: 4px 8px !important;
+  }
+</style>
+
+<div id="sidebar"
+     style="position: fixed; top: 0; right: 0; width: 35%; height: 100%;
+            background-color: #f9f9f9; border-left: 2px solid #ccc;
+            padding: 15px; overflow:auto; z-index:9999;">
+  <h2 id="siteTitle">Site Information</h2>
+  <div id="siteRisk"></div>
+
+  <div class="tab-buttons">
+    <button onclick="showTab('tab1')" id="btn-tab1" class="active">Pathogens</button>
+    <button onclick="showTab('tab2')" id="btn-tab2">ARG Classes</button>
+    <button onclick="showTab('tab3')" id="btn-tab3">ARGs</button>
+  </div>
+
+  <div id="tab1" class="tab">
+    <h3>Pathogen Detection</h3>
+    <table id="pathogenTable" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Pathogen</th>
+          <th>Risk</th>
+          <th>Rel. Risk</th>
+          <th>Conf.</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div id="tab2" class="tab" style="display:none">
+    <h3>ARG Class Distribution</h3>
+    <canvas id="argChart" style="max-height: 250px;"></canvas>
+    <table id="argClassTable" class="display" style="width:100%; margin-top:10px;">
+      <thead><tr><th>Class</th><th>Count</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div id="tab3" class="tab" style="display:none">
+    <h3>Individual ARGs</h3>
+    <table id="argTable" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Class</th>
+          <th>Conf.</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+function showTab(tabId) {
+    document.querySelectorAll('.tab').forEach(tab => tab.style.display = 'none');
+    document.getElementById(tabId).style.display = 'block';
+
+    // Update button states
+    document.querySelectorAll('.tab-buttons button').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('btn-' + tabId).classList.add('active');
+}
+
+function getRiskClass(risk) {
+    if (risk > 100) return 'risk-high';
+    if (risk > 50) return 'risk-medium';
+    return 'risk-low';
+}
+
+function updateSidebar(siteIndex) {
+    const data = window.siteData[siteIndex];
+
+    if (!data) {
+        console.error('No data for site index:', siteIndex);
+        return;
+    }
+
+    console.log('Updating sidebar for:', data.name, '(Risk:', data.risk + ')');
+
+    // Update site title
+    document.getElementById("siteTitle").innerText = data.name;
+
+    // Update risk display (cap at 100 for display)
+    const displayRisk = Math.min(data.risk, 100);
+    const riskClass = getRiskClass(data.risk);
+    document.getElementById("siteRisk").innerHTML =
+        '<span class="risk-badge ' + riskClass + '">Risk Score: ' + displayRisk.toFixed(2) + '</span>';
+
+    // Populate Pathogen Table
+    const pathogenTable = window.pathogenTable;
+    pathogenTable.clear();
+    if (data.pathogens && data.pathogens.length > 0) {
+        data.pathogens.forEach(p => {
+            pathogenTable.row.add([
+                p.name || 'N/A',
+                p.Risk ? p.Risk.toFixed(1) : 'N/A',
+                p.relative_risk ? p.relative_risk.toFixed(2) : 'N/A',
+                p.confidence ? p.confidence.toFixed(1) : 'N/A'
+            ]);
+        });
+    }
+    pathogenTable.draw();
+
+    // Populate ARG Class Table and Chart
+    const argClassTable = window.argClassTable;
+    argClassTable.clear();
+    let labels = [];
+    let counts = [];
+
+    if (data.arg_classes) {
+        for (let cls in data.arg_classes) {
+            argClassTable.row.add([cls, data.arg_classes[cls]]);
+            labels.push(cls);
+            counts.push(data.arg_classes[cls]);
+        }
+    }
+    argClassTable.draw();
+
+    // Draw Chart
+    let ctx = document.getElementById('argChart').getContext('2d');
+    if (window.argChartInstance) {
+        window.argChartInstance.destroy();
+    }
+
+    if (labels.length > 0) {
+        window.argChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'ARG Count',
+                    data: counts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.7)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: {
+                                size: 10
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 10
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Populate Individual ARGs Table
+    const argTable = window.argTable;
+    argTable.clear();
+    if (data.args && data.args.length > 0) {
+        data.args.forEach(a => {
+            argTable.row.add([
+                a.name || 'N/A',
+                a.class || 'N/A',
+                a.confidence ? a.confidence.toFixed(1) : 'N/A'
+            ]);
+        });
+    }
+    argTable.draw();
+
+    // Show default tab
+    showTab('tab1');
+}
+</script>
+    
+            <div class="folium-map" id="map_29caabfb63c45866db496db3db445268" ></div>
+        
+</body>
+<script>
+    
+    
+window.siteData = {
+  "0": {
+    "name": "Example Site 1",
+    "risk": 78.23456789012345,
+    "pathogens": [
+      {
+        "name": "Enterobacter sp.",
+        "Risk": 4.0,
+        "relative_risk": 22.45678901234567,
+        "confidence": 67.89012345678901
+      },
+      {
+        "name": "Pseudomonas aeruginosa",
+        "Risk": 5.0,
+        "relative_risk": 12.34567890123456,
+        "confidence": 45.67890123456789
+      },
+      {
+        "name": "Acinetobacter baumannii",
+        "Risk": 6.0,
+        "relative_risk": 43.21098765432109,
+        "confidence": 89.01234567890123
+      }
+    ],
+    "arg_classes": {
+      "CARBAPENEM": 1,
+      "FLUOROQUINOLONE": 1
+    },
+    "args": [
+      {
+        "name": "carbapenem-hydrolyzing beta-lactamase",
+        "class": "CARBAPENEM",
+        "confidence": 87.65
+      },
+      {
+        "name": "fluoroquinolone resistance protein",
+        "class": "FLUOROQUINOLONE",
+        "confidence": 92.34
+      }
+    ]
+  },
+  "1": {
+    "name": "Example Site 2",
+    "risk": 298.7654321098765,
+    "pathogens": [
+      {
+        "name": "Salmonella sp.",
+        "Risk": 5.0,
+        "relative_risk": 34.56789012345678,
+        "confidence": 78.90123456789012
+      },
+      {
+        "name": "Vibrio sp.",
+        "Risk": 4.0,
+        "relative_risk": 23.45678901234567,
+        "confidence": 56.78901234567890
+      },
+      {
+        "name": "Shewanella sp.",
+        "Risk": 3.0,
+        "relative_risk": 12.34567890123456,
+        "confidence": 34.56789012345678
+      },
+      {
+        "name": "Escherichia fergusonii",
+        "Risk": 6.0,
+        "relative_risk": 67.89012345678901,
+        "confidence": 91.23456789012345
+      },
+      {
+        "name": "Citrobacter freundii",
+        "Risk": 5.0,
+        "relative_risk": 45.67890123456789,
+        "confidence": 73.21098765432109
+      },
+      {
+        "name": "Morganella sp.",
+        "Risk": 4.0,
+        "relative_risk": 19.87654321098765,
+        "confidence": 42.10987654321098
+      },
+      {
+        "name": "Stenotrophomonas maltophilia",
+        "Risk": 7.0,
+        "relative_risk": 78.90123456789012,
+        "confidence": 95.67890123456789
+      },
+      {
+        "name": "Serratia marcescens",
+        "Risk": 5.0,
+        "relative_risk": 56.78901234567890,
+        "confidence": 84.32109876543210
+      },
+      {
+        "name": "Hafnia alvei",
+        "Risk": 3.0,
+        "relative_risk": 8.76543210987654,
+        "confidence": 23.45678901234567
+      },
+      {
+        "name": "Edwardsiella tarda",
+        "Risk": 6.0,
+        "relative_risk": 89.01234567890123,
+        "confidence": 98.76543210987654
+      }
+    ],
+    "arg_classes": {
+      "AMINOGLYCOSIDE": 2,
+      "CEPHALOSPORIN": 3,
+      "MACROLIDE": 1,
+      "RIFAMPIN": 1,
+      "SULFONAMIDE": 2,
+      "TETRACYCLINE": 4,
+      "VANCOMYCIN": 1
+    },
+    "args": [
+      {
+        "name": "tetracycline resistance MFS efflux pump",
+        "class": "TETRACYCLINE",
+        "confidence": 89.45
+      },
+      {
+        "name": "aminoglycoside phosphotransferase",
+        "class": "AMINOGLYCOSIDE",
+        "confidence": 76.32
+      },
+      {
+        "name": "extended-spectrum beta-lactamase",
+        "class": "CEPHALOSPORIN",
+        "confidence": 94.21
+      },
+      {
+        "name": "sulfonamide-resistant dihydropteroate synthase",
+        "class": "SULFONAMIDE",
+        "confidence": 67.89
+      },
+      {
+        "name": "macrolide efflux pump",
+        "class": "MACROLIDE",
+        "confidence": 81.54
+      },
+      {
+        "name": "tetracycline ribosomal protection protein",
+        "class": "TETRACYCLINE",
+        "confidence": 73.26
+      },
+      {
+        "name": "vancomycin resistance protein",
+        "class": "VANCOMYCIN",
+        "confidence": 55.78
+      },
+      {
+        "name": "rifampin ADP-ribosyltransferase",
+        "class": "RIFAMPIN",
+        "confidence": 69.43
+      },
+      {
+        "name": "cephalosporin-hydrolyzing beta-lactamase",
+        "class": "CEPHALOSPORIN",
+        "confidence": 88.91
+      },
+      {
+        "name": "aminoglycoside acetyltransferase",
+        "class": "AMINOGLYCOSIDE",
+        "confidence": 79.65
+      },
+      {
+        "name": "tetracycline efflux protein",
+        "class": "TETRACYCLINE",
+        "confidence": 91.28
+      },
+      {
+        "name": "sulfonamide resistance protein",
+        "class": "SULFONAMIDE",
+        "confidence": 64.37
+      },
+      {
+        "name": "tetracycline degradation enzyme",
+        "class": "TETRACYCLINE",
+        "confidence": 58.92
+      },
+      {
+        "name": "class A beta-lactamase",
+        "class": "CEPHALOSPORIN",
+        "confidence": 72.45
+      }
+    ]
+  },
+  "2": {
+    "name": "Example Site 3",
+    "risk": 45.67890123456789,
+    "pathogens": [
+      {
+        "name": "Klebsiella oxytoca",
+        "Risk": 6.0,
+        "relative_risk": 45.67890123456789,
+        "confidence": 78.90123456789012
+      }
+    ],
+    "arg_classes": {},
+    "args": []
+  },
+  "3": {
+    "name": "Example Site 4",
+    "risk": 67.89012345678901,
+    "pathogens": [
+      {
+        "name": "Aeromonas hydrophila",
+        "Risk": 5.0,
+        "relative_risk": 23.45678901234567,
+        "confidence": 56.78901234567890
+      },
+      {
+        "name": "Aeromonas caviae",
+        "Risk": 5.0,
+        "relative_risk": 19.87654321098765,
+        "confidence": 47.65432109876543
+      },
+      {
+        "name": "Citrobacter koseri",
+        "Risk": 4.0,
+        "relative_risk": 24.55679012345679,
+        "confidence": 59.87654321098765
+      }
+    ],
+    "arg_classes": {
+      "POLYMYXIN": 2,
+      "COLISTIN": 1
+    },
+    "args": [
+      {
+        "name": "polymyxin resistance protein",
+        "class": "POLYMYXIN",
+        "confidence": 83.21
+      },
+      {
+        "name": "colistin resistance phosphoethanolamine transferase",
+        "class": "COLISTIN",
+        "confidence": 91.47
+      },
+      {
+        "name": "polymyxin resistance two-component system",
+        "class": "POLYMYXIN",
+        "confidence": 76.89
+      }
+    ]
+  },
+  "4": {
+    "name": "Example Site 5",
+    "risk": 0.0,
+    "pathogens": [],
+    "arg_classes": {},
+    "args": []
+  },
+  "5": {
+    "name": "Example Site 6",
+    "risk": 34.56789012345678,
+    "pathogens": [
+      {
+        "name": "Yersinia enterocolitica",
+        "Risk": 5.0,
+        "relative_risk": 34.56789012345678,
+        "confidence": 67.89012345678901
+      }
+    ],
+    "arg_classes": {},
+    "args": []
+  },
+  "6": {
+    "name": "Example Site 7",
+    "risk": 0.0,
+    "pathogens": [],
+    "arg_classes": {},
+    "args": []
+  },
+  "7": {
+    "name": "Example Site 8",
+    "risk": 0.0,
+    "pathogens": [
+      {
+        "name": "Streptococcus sp.",
+        "Risk": 2.0,
+        "relative_risk": 5.67890123456789,
+        "confidence": 78.90123456789012
+      },
+      {
+        "name": "Flavobacterium sp.",
+        "Risk": 1.0,
+        "relative_risk": 3.45678901234567,
+        "confidence": 45.67890123456789
+      }
+    ],
+    "arg_classes": {
+      "PENICILLIN": 1,
+      "AMINOGLYCOSIDE": 2
+    },
+    "args": [
+      {
+        "name": "aminoglycoside nucleotidyltransferase",
+        "class": "AMINOGLYCOSIDE",
+        "confidence": 72.34
+      },
+      {
+        "name": "penicillin-binding protein",
+        "class": "PENICILLIN",
+        "confidence": 81.29
+      },
+      {
+        "name": "aminoglycoside adenylyltransferase",
+        "class": "AMINOGLYCOSIDE",
+        "confidence": 68.75
+      }
+    ]
+  },
+  "8": {
+    "name": "Example Site 9",
+    "risk": 234.5678901234567,
+    "pathogens": [
+      {
+        "name": "Burkholderia cepacia",
+        "Risk": 6.0,
+        "relative_risk": 56.78901234567890,
+        "confidence": 84.32109876543210
+      },
+      {
+        "name": "Ralstonia pickettii",
+        "Risk": 5.0,
+        "relative_risk": 34.56789012345678,
+        "confidence": 67.89012345678901
+      },
+      {
+        "name": "Achromobacter xylosoxidans",
+        "Risk": 4.0,
+        "relative_risk": 23.45678901234567,
+        "confidence": 56.78901234567890
+      },
+      {
+        "name": "Chryseobacterium sp.",
+        "Risk": 3.0,
+        "relative_risk": 12.34567890123456,
+        "confidence": 34.56789012345678
+      },
+      {
+        "name": "Raoultella ornithinolytica",
+        "Risk": 5.0,
+        "relative_risk": 45.67890123456789,
+        "confidence": 73.21098765432109
+      },
+      {
+        "name": "Leclercia adecarboxylata",
+        "Risk": 4.0,
+        "relative_risk": 19.87654321098765,
+        "confidence": 47.65432109876543
+      },
+      {
+        "name": "Elizabethkingia anophelis",
+        "Risk": 6.0,
+        "relative_risk": 67.89012345678901,
+        "confidence": 89.01234567890123
+      },
+      {
+        "name": "Brevundimonas sp.",
+        "Risk": 2.0,
+        "relative_risk": 8.76543210987654,
+        "confidence": 23.45678901234567
+      },
+      {
+        "name": "Ochrobactrum anthropi",
+        "Risk": 5.0,
+        "relative_risk": 38.90123456789012,
+        "confidence": 71.23456789012345
+      },
+      {
+        "name": "Pantoea agglomerans",
+        "Risk": 4.0,
+        "relative_risk": 27.65432109876543,
+        "confidence": 62.10987654321098
+      }
+    ],
+    "arg_classes": {
+      "CARBAPENEM": 2,
+      "MULTIDRUG": 1,
+      "GLYCOPEPTIDE": 1,
+      "OXAZOLIDINONE": 1,
+      "QUINOLONE": 2,
+      "AMINOGLYCOSIDE": 1
+    },
+    "args": [
+      {
+        "name": "quinolone resistance gene",
+        "class": "QUINOLONE",
+        "confidence": 85.67
+      },
+      {
+        "name": "carbapenem-hydrolyzing metallo-beta-lactamase",
+        "class": "CARBAPENEM",
+        "confidence": 92.43
+      },
+      {
+        "name": "aminoglycoside modifying enzyme",
+        "class": "AMINOGLYCOSIDE",
+        "confidence": 79.21
+      },
+      {
+        "name": "multidrug efflux pump",
+        "class": "MULTIDRUG",
+        "confidence": 87.98
+      },
+      {
+        "name": "fluoroquinolone resistance protein",
+        "class": "QUINOLONE",
+        "confidence": 74.35
+      },
+      {
+        "name": "carbapenemase",
+        "class": "CARBAPENEM",
+        "confidence": 89.67
+      },
+      {
+        "name": "glycopeptide resistance protein",
+        "class": "GLYCOPEPTIDE",
+        "confidence": 71.54
+      },
+      {
+        "name": "oxazolidinone resistance 23S rRNA methyltransferase",
+        "class": "OXAZOLIDINONE",
+        "confidence": 66.82
+      }
+    ]
+  }
+};
+window.coordsToIndices = {
+  "64.31658,-156.23263": [0],  // Example Site 1
+  "64.41658,-156.13263": [1],  // Example Site 2
+  "65.56021,-145.91605": [2],  // Example Site 3
+  "65.55021,-145.92605": [3],  // Example Site 4
+  "65.56821,-145.91805": [4],  // Example Site 5
+  "65.59021,-145.71605": [5],  // Example Site 6
+  "65.58021,-145.92605": [6],  // Example Site 7
+  "65.66021,-145.81605": [7],  // Example Site 8
+  "65.56872,-145.71605": [8]   // Example Site 9
+};
+
+window.onload = function() {
+    // Initialize DataTables and store them globally
+    window.pathogenTable = $('#pathogenTable').DataTable({
+        pageLength: 10,
+        searching: true,
+        order: [[1, 'desc']]
+    });
+
+    window.argClassTable = $('#argClassTable').DataTable({
+        pageLength: 5,
+        searching: false,
+        order: [[1, 'desc']]
+    });
+
+    window.argTable = $('#argTable').DataTable({
+        pageLength: 10,
+        searching: true,
+        order: [[2, 'desc']]
+    });
+
+    console.log('Dashboard initialized. Site data loaded:', Object.keys(siteData).length, 'sites');
+
+    // Find the map object
+    let mapObj = null;
+    for (let key in window) {
+        if (window[key] instanceof L.Map) {
+            mapObj = window[key];
+            break;
+        }
+    }
+
+    if (!mapObj) {
+        console.error('Map object not found');
+        return;
+    }
+
+    // Attach click handlers to all markers by matching coordinates
+    mapObj.eachLayer(function(layer) {
+        if (layer instanceof L.Marker) {
+            layer.on('click', function(e) {
+                const lat = e.latlng.lat.toFixed(5);
+                const lng = e.latlng.lng.toFixed(5);
+                const coordKey = lat + ',' + lng;
+
+                console.log('Marker clicked at:', coordKey);
+
+                const siteIndices = window.coordsToIndices[coordKey];
+
+                if (siteIndices && siteIndices.length > 0) {
+                    // If multiple sites at same coords, prefer one with data
+                    let bestIndex = siteIndices[0];
+                    for (let i = 0; i < siteIndices.length; i++) {
+                        const idx = siteIndices[i];
+                        if (window.siteData[idx].risk > 0 ||
+                            (window.siteData[idx].pathogens && window.siteData[idx].pathogens.length > 0)) {
+                            bestIndex = idx;
+                            break;
+                        }
+                    }
+
+                    console.log('Found site index:', bestIndex, 'from', siteIndices.length, 'candidates');
+                    updateSidebar(bestIndex);
+                } else {
+                    console.error('No data found for coordinates:', coordKey);
+                    console.log('Available coordinates:', Object.keys(window.coordsToIndices));
+                }
+            });
+        }
+    });
+};
+    
+            var map_29caabfb63c45866db496db3db445268 = L.map(
+                "map_29caabfb63c45866db496db3db445268",
+                {
+                    center: [65.47169704320193, -145.01400477423005],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 5,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_14d9ce252b3cec1bbb1ae6b80fc75111 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_14d9ce252b3cec1bbb1ae6b80fc75111.addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            var marker_e4245c011d617ba8db1de585b44ddaf6 = L.marker(
+                [64.31657927482827, -156.23262600860826],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_e4245c011d617ba8db1de585b44ddaf6.bindTooltip(
+                `<div>
+                     Example Site 1
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_9d873a926a9e141f8f196e10c35b1e5d = L.marker(
+                [64.41657927482827, -156.13262600860826],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_9d873a926a9e141f8f196e10c35b1e5d.bindTooltip(
+                `<div>
+                     Example Site 2
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_2e0f2cbb00434ca5f7a7ea86332a5013 = L.marker(
+                [65.560209015242, -145.9160495886516],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_2e0f2cbb00434ca5f7a7ea86332a5013.bindTooltip(
+                `<div>
+                     Example Site 3
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_c1e1f0d687f72e588fbb01ec0fffcd5b = L.marker(
+                [65.550209015242, -145.9260495886516],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_c1e1f0d687f72e588fbb01ec0fffcd5b.bindTooltip(
+                `<div>
+                     Example Site 4
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_5bcf3e252ff36a1c36a0d6169eee51cb = L.marker(
+                [65.568209015242, -145.9180495886516],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_5bcf3e252ff36a1c36a0d6169eee51cb.bindTooltip(
+                `<div>
+                     Example Site 5
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_5f8764ef70a988bfcc94550b057a8fb8 = L.marker(
+                [65.590209015242, -145.7160495886516],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_5f8764ef70a988bfcc94550b057a8fb8.bindTooltip(
+                `<div>
+                     Example Site 6
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_0c3bab59345968caf477b597bbc380ac = L.marker(
+                [65.580209015242, -145.9260495886516],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_0c3bab59345968caf477b597bbc380ac.bindTooltip(
+                `<div>
+                     Example Site 7
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_0a27b7dcbf23c9f155a644a8c0fa6b08 = L.marker(
+                [65.660209015242, -145.8160495886516],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_0a27b7dcbf23c9f155a644a8c0fa6b08.bindTooltip(
+                `<div>
+                     Example Site 8
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_5986229e1779b62eed71ef8180bc4f51 = L.marker(
+                [65.5687209015242, -145.7160495886516],
+                {
+}
+            ).addTo(map_29caabfb63c45866db496db3db445268);
+        
+    
+            marker_5986229e1779b62eed71ef8180bc4f51.bindTooltip(
+                `<div>
+                     Example Site 9
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+var heat_map_15df38e3337464bf953899b7326f2aa0 = L.heatLayer(
+    [
+        [64.31657927482827, -156.23262600860826, 78.23456789012345],  // Example Site 1
+        [64.41657927482827, -156.13262600860826, 298.7654321098765],  // Example Site 2
+        [65.560209015242, -145.9160495886516, 45.67890123456789],     // Example Site 3
+        [65.550209015242, -145.9260495886516, 67.89012345678901],     // Example Site 4
+        [65.568209015242, -145.9180495886516, 34.56789012345678],     // Example Site 5
+        [65.590209015242, -145.7160495886516, 0.0],                   // Example Site 6
+        [65.580209015242, -145.9260495886516, 0.0],                   // Example Site 7
+        [65.660209015242, -145.8160495886516, 234.5678901234567],     // Example Site 8
+        [65.5687209015242, -145.7160495886516, 0.0]                   // Example Site 9
+    ],
+    {
+        "minOpacity": 0.5,
+        "maxZoom": 18,
+        "radius": 25,
+        "blur": 15,
+    }
+);
+
+heat_map_15df38e3337464bf953899b7326f2aa0.addTo(map_29caabfb63c45866db496db3db445268);
+        
+</script>
+</html>
